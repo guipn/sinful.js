@@ -1,5 +1,5 @@
 // sinful.js
-// ------
+// ----------
 //
 // Sinful will enhance the JavaScript environment in which it is run,
 // providing it with functionalities that are often useful.
@@ -52,6 +52,8 @@ void function () {
     String.prototype.words = function () {
 	return this.split(/\s+/);
     };
+
+
 
 
     Object.prototype.deepCopy = function () {
