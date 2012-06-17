@@ -1,4 +1,4 @@
-### sinful.js
+# sinful.js
 
 Sinful will enhance the JavaScript environment in which it is run, providing it with functionalities that are often useful.
 
@@ -75,4 +75,4 @@ Math.div(0.3, 0.1); // -> 3, instead of 2.9999999999999996
 
 Refer to [LEGAL] [legal]
 
-[legal]: 
+[legal]: https://github.com/guipn/sinful.js/blob/master/LEGAL
