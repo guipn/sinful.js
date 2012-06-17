@@ -1,14 +1,16 @@
-// sin.js
+// sinful.js
 // ------
 //
-// Sin will enhance the JavaScript environment in which it is run,
+// Sinful will enhance the JavaScript environment in which it is run,
 // providing it with functionalities that are often useful.
 //
 // One of the ways in which this is done is augmenting existing prototypes,
 // which is something that most priests and pastors will frown upon.
 //
-// Sin assumes the environment is a conformant ES5 implementation.
+// Sinful assumes the environment is a conformant ES5 implementation.
 // For the sake of clarity and brevity, no checks or safeguards are employed.
+//
+// I assume that you know what you're doing. For legal information, refer to LEGAL.
 //
 // gdjs
 //
