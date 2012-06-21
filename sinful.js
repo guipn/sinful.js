@@ -112,6 +112,33 @@ void function () {
 
 
 
+    Array.range = function (start, end, step) {
+
+	var result = [], i = start;
+
+	if (step == 0) {
+	    throw Error('Step size must not evaluate to 0.');
+	}
+
+	while (i <= end) {
+	    result.push(i);
+	    i += step;
+	}
+
+	return result;
+    };
+
+
+    Array.discretize = function (start, end, count) {
+
+	return (count == 0) ?
+		    [] : 
+		    Array.range(start, end, (end - start) / count);
+    };
+
+
+
+
     void function () {
 
 	// Computes the multiplier necessary to make x >= 1,
