@@ -116,6 +116,26 @@ void function () {
     };
 
 
+    Function.prototype.memoize = function (keyGen) {
+
+	var cache = {}, that = this;
+
+	keyGen = keyGen || function (args) {
+	    return JSON.stringify(args);
+	};
+
+	return function () {
+
+	    var args = Array.prototype.slice.call(arguments), 
+		key  = keyGen(args);
+
+	    return (typeof cache[key] === 'undefined') ? 
+			cache[key] = that(args) :
+			cache[key];
+	};
+    };
+
+
 
     Array.range = function (start, end, step) {
 

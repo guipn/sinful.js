@@ -8,15 +8,14 @@ Sinful assumes the environment is a conformant ES5 implementation. For the sake 
 
 Here are the enhancements it introduces:
 
+
 ## Strings
 
-Strings are given the `interp`, `reverse` and `words` methods. The `String` object is also given an `ASCII` property whose value is an object whose own properties are `lowercase`, `uppercase`, `letters`, `digits`, `hexDigits` and `octDigits`. Examples:
+### String.ASCII
+
+ The value of the `ASCII` property given to string is an object whose own properties are the useful ASCII alphabets `lowercase`, `uppercase`, `letters`, `digits`, `hexDigits` and `octDigits`:
 
 <pre>
-'abcdef'.reverse(); // -> 'fedcba'
-'Hello, {name}!'.interp({ name: 'George' }); // -> 'Hello, George!'
-'This is the "words" functionality'.words(); // -> ['This', 'is', 'the', '"words"', 'functionality']
-
 String.ASCII.lowercase; // -> 'abcdefghijklmnopqrstuvwxyz'
 String.ASCII.uppercase; // -> 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 String.ASCII.letters; // -> 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -26,9 +25,51 @@ String.ASCII.octDigits; // -> '01234567'
 </pre>
 
 
+### String.prototype.reverse()
+
+ Self-explanatory:
+
+<pre>
+'abcdef'.reverse(); // -> 'fedcba'
+</pre>
+
+
+### String.prototype.interp(kv)
+
+ Returns a string composed of the interpolated values for the given keys. Key/value pairs are given by a parameter object:
+
+<pre>
+'{name} is {age}.'.interp({ 
+    name: 'George',
+    age:  30
+}); // -> 'George is 30.'
+</pre>
+
+
+### String.prototype.words()
+
+ Returns an array given by splitting this string on spaces:
+
+<pre>
+'This is the "words" functionality'.words(); // -> ['This', 'is', 'the', '"words"', 'functionality']
+</pre>
+
+
+### String.prototype.echo(times)
+
+ Returns a string made of `times` repetitions of this string:
+
+<pre>
+'echo\n'.echo(3); // -> 'echo\necho\necho'
+</pre>
+
+
+
 ## Objects
 
-Objects are given the `deepCopy` method. Example:
+### Object.prototype.deepCopy()
+
+Recursively mirrors this object's own property/values:
 
 <pre>
 
@@ -38,9 +79,13 @@ Objects are given the `deepCopy` method. Example:
 
 </pre>
 
+
+
 ## Functions
 
-Functions are given the `curry` and `compose` methods. Examples:
+### Function.prototype.curry()
+
+ Partially applies this function to the given arguments and returns that new function:
 
 <pre>
 function plus(one, other) { return one + other; }
@@ -50,6 +95,13 @@ var plusOne = plus.curry(1);
 plusOne(2); // -> 3
 </pre>
 
+
+### Function.prototype.compose()
+
+ Analogue of the `.` operator in Haskell, and the `∘` operator in Mathematics. 
+ 
+ For this function (`f`), and given some other function `g`, returns a new function `f ∘ g`, such that `(f ∘ g)(x)` is the same as `f(g(x))`. 
+
 <pre>
 function square(x)   { return x * x; }
 function negate(x)   { return -x;    }
@@ -58,10 +110,13 @@ function decrease(x) { return x - 1; }
 negate.compose(square).compose(decrease)(10); // -> -81
 </pre>
 
+Together, the `curry` and `compose` functions bless the environment with strong reuse possibilities. New functions may be built out of existing ones with less verbosity than before, yet maintaining readability and clarity.
+
+
 
 ## Math
 
-The `Math` object is given the `add`, `sub`, `mul`, `div` and `intdiv` properties, whose values are all functions designed to perform fundamental arithmetic that is free from the problems of floating point representation (such as the fact that 0.1 + 0.2 !== 0.3). Examples:
+ECMAScript performs floating point arithmetic to copmute `+`, `-`, `*` and `/`. You should understand [why this is a problem] (http://dl.acm.org/citation.cfm?id=103163). Sinful gives the `Math` object the `add`, `sub`, `mul`, `div` and `intdiv` properties, whose values are all functions designed to perform fundamental arithmetic that is free from the problems of floating point representation (such as the fact that 0.1 + 0.2 !== 0.3). Examples:
 
 <pre>
 Math.add(0.1, 0.2); // -> 0.3, instead of 0.30000000000000004
@@ -69,6 +124,7 @@ Math.sub(0.3, 0.2); // -> 0.1, instead of 0.09999999999999998
 Math.mul(0.2, 0.1); // -> 0.02, instead of 0.020000000000000004
 Math.div(0.3, 0.1); // -> 3, instead of 2.9999999999999996
 </pre>
+
 
 
 ## Legal Information
