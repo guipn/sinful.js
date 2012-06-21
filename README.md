@@ -13,7 +13,7 @@ Here are the enhancements it introduces:
 
 ### String.ASCII
 
- The value of the `ASCII` property given to string is an object whose own properties are the useful ASCII alphabets `lowercase`, `uppercase`, `letters`, `digits`, `hexDigits` and `octDigits`:
+ The value of the `ASCII` property given to `String` is an object whose own properties are the useful ASCII alphabets `lowercase`, `uppercase`, `letters`, `digits`, `hexDigits` and `octDigits`:
 
 <pre>
 String.ASCII.lowercase; // -> 'abcdefghijklmnopqrstuvwxyz'
