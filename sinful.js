@@ -54,6 +54,11 @@ void function () {
     };
 
 
+    String.prototype.echo = function (times) {
+	return new Array(times + 1).join(this);
+    };
+
+
 
 
     Object.prototype.deepCopy = function () {
