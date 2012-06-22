@@ -115,7 +115,7 @@ Together, the `curry` and `compose` functions bless the environment with strong 
 
 ### Function.memoize(func, keyGen)
 
- Returns a new function which perfors equivalent computation to this one, but that caches results, potentially improving speed. The `keyGen` parameter is a function taking an array with the parameters received in a call to your function. If `keyGen` is falsy, the default behavior is to serialize such array with `JSON.stringify`. Example:
+ Returns a new function which perfors equivalent computation to `func`, but that caches results, potentially improving speed. The `keyGen` parameter is a function taking an array with the parameters received in a call to your function. If `keyGen` is falsy, the default behavior is to serialize such array with `JSON.stringify`. Example:
 
 <pre>
 function fib(n) {
