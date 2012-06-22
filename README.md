@@ -118,10 +118,12 @@ Together, the `curry` and `compose` functions bless the environment with strong 
  Returns a new function which perfors equivalent computation to `func`, but that caches results, potentially improving speed. The `keyGen` parameter is a function taking an array with the parameters received in a call to your function. If `keyGen` is falsy, the default behavior is to serialize such array with `JSON.stringify`. Example:
 
 <pre>
+// Excuse the indentation. This has to do with Markdown.
+
 function fib(n) {
 
     if (n == 1) {
-	return 1;
+	return 1; 
     } else if (n == 0) {
 	return 0;
     }
