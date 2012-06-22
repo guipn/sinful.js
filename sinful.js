@@ -59,6 +59,22 @@ void function () {
     };
 
 
+    String.prototype.truncate = function (maxLen, suffix) {
+
+	maxLen = maxLen || 50;
+	suffix = suffix || '...';
+
+	if (maxLen - suffix.length < 0) {
+	    throw Error('The suffix "' + suffix + '" is wider than ' + maxLen);
+	}
+
+	return this.length > maxLen ? 
+		this.slice(0, maxLen - suffix.length) + suffix :
+		this;
+	
+    };
+
+
 
 
     Object.prototype.deepCopy = function () {

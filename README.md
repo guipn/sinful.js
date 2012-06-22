@@ -64,6 +64,15 @@ String.ASCII.octDigits; // ↦ '01234567'
 </pre>
 
 
+### String.prototype.truncate(maxLen, suffix)
+
+ Returns a string whose length is not greater than `maxLen`. If this string's length is greater than `maxLen`, the truncation `suffix` is appended to its end. If `maxLen` is falsy, `50` is used. If `suffix` is falsy, `'...'` is used.
+
+<pre>
+'1234567'.truncate(5); // ↦ '12...'
+</pre>
+
+
 
 ## Objects
 
