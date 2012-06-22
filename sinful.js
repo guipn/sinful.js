@@ -71,9 +71,7 @@ void function () {
 	return this.length > maxLen ? 
 		this.slice(0, maxLen - suffix.length) + suffix :
 		this;
-	
     };
-
 
 
 
