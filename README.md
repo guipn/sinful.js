@@ -173,7 +173,7 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 ## Math
 
-ECMAScript performs floating point arithmetic to copmute `+`, `-`, `*` and `/`. You should understand [why this is a problem] (http://dl.acm.org/citation.cfm?id=103163). Sinful gives the `Math` object the `add`, `sub`, `mul`, `div` and `intdiv` properties, whose values are all functions designed to perform fundamental arithmetic that is free from the problems of floating point representation (such as the fact that 0.1 + 0.2 !== 0.3). Examples:
+ECMAScript performs floating point arithmetic to compute `+`, `-`, `*` and `/`. You should understand [why this is a problem] (http://dl.acm.org/citation.cfm?id=103163). Sinful gives the `Math` object the `add`, `sub`, `mul`, `div` and `intdiv` properties, whose values are all functions designed to perform fundamental arithmetic that is free from the problems of floating point representation (such as the fact that 0.1 + 0.2 !== 0.3). Examples:
 
 <pre>
 Math.add(0.1, 0.2); // ↦ 0.3, instead of 0.30000000000000004
