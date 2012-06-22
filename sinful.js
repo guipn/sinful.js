@@ -116,9 +116,9 @@ void function () {
     };
 
 
-    Function.prototype.memoize = function (keyGen) {
+    Function.memoize = function (func, keyGen) {
 
-	var cache = {}, that = this;
+	var cache = {};
 
 	keyGen = keyGen || function (args) {
 	    return JSON.stringify(args);
@@ -130,7 +130,7 @@ void function () {
 		key  = keyGen(args);
 
 	    return (typeof cache[key] === 'undefined') ? 
-			cache[key] = that(args) :
+			cache[key] = func(args) :
 			cache[key];
 	};
     };

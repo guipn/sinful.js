@@ -113,6 +113,40 @@ negate.compose(square).compose(decrease)(10); // ↦ -81
 Together, the `curry` and `compose` functions bless the environment with strong reuse possibilities. New functions may be built out of existing ones with less verbosity than before, yet maintaining readability and clarity.
 
 
+### Function.memoize(func, keyGen)
+
+ Returns a new function which perfors equivalent computation to this one, but that caches results, potentially improving speed. The `keyGen` parameter is a function taking an array with the parameters received in a call to your function. If `keyGen` is falsy, the default behavior is to serialize such array with `JSON.stringify`. Example:
+
+<pre>
+function fib(n) {
+
+    if (n == 1) {
+	return 1;
+    } else if (n == 0) {
+	return 0;
+    }
+
+    return fib(n - 1) + fib(n - 2);
+}
+
+fib(20); // 21891 function calls made
+fib(25); // 242785 function calls made
+fib(25); // 242785 function calls made
+
+var fib = Function.memoize(fib);
+
+fib(20); // 60 function calls made
+fib(25); // 16 function calls made
+fib(25); // 1 function call made
+</pre>
+
+ The improvements are often drastic, particularly for recursive functions, but remember that it does not always make sense to memoize. If the interesting part of your function are its side-effects, it makes no sense to memoize, since doing so merely decreases the return time by skipping repeated computation. Functions that are not [referentially transparent] (http://www.haskell.org/haskellwiki/Referential_transparency) - which do not depend only on their arguments - are often very bad candidates. Functions may be tied to factors such as time, system load, etc., which must not be overlooked when considering memoization.
+ 
+ The default behavior of `keyGen` is undesired at times. Receiving objects as parameters requires clearly defining identity (remember - the order of object properties is unspecified). 
+
+ Overall, [pure functions] (http://www.haskell.org/haskellwiki/Functional_programming#Purity) that are referentially transparent are great candidates. The `Function.memoize` function introduces very little noise, and does not touch the original function's implementation at all. Applying it is only a matter of writing `var foo = Function.memoize(foo);`, and removing memoization is as easy as deleting that statement.
+
+
 
 ## Arrays
 
