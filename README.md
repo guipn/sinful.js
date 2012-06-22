@@ -170,6 +170,7 @@ Array.range(0, 10, 1); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 Array.range(0, 10, 7); // ↦ [0, 7]
 </pre>
 
+
 ### Array.discretize(start, end, count)
 
  Returns an array whose values are the points given by the division of the (`start`, `end`) range into `count` parts. If `count` is 0, an empty array is returned.
@@ -177,6 +178,17 @@ Array.range(0, 10, 7); // ↦ [0, 7]
 <pre>
 Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 </pre>
+
+
+### Array.prototype.unique(search)
+
+ Returns an array comprised of the unique values of this array. The `search` paramater is a function operating on an array bound to `this` and taking one parameter, which should return `-1` if the parameter is not in the array, and any other value otherwise.
+
+ If `search` is not specified, the `indexOf` function is used.
+
+ <pre>
+ [2, 2, 2, 3, 3, 1, 2, 3, 4, 1,3, 3, 4, 2, 1, 2, 3, 3, 4, 1].unique(); // ↦ [2, 3, 1, 4]
+ </pre>
 
 
 

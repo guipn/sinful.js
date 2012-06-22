@@ -178,6 +178,26 @@ void function () {
     };
 
 
+    Array.prototype.clone = function () {
+	return this.slice();
+    };
+
+
+    Array.prototype.unique = function (search) {
+
+	search = search || this.indexOf;
+
+	return this.reduce(function (result, each) {
+
+	    if (search.call(result, each) === -1) {
+		result.push(each);
+	    }
+
+	    return result;
+
+	}, []);
+    };
+
 
 
     void function () {
