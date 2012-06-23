@@ -194,6 +194,8 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 ## Math
 
+### Basic Arithmetic
+
 ECMAScript performs floating point arithmetic to compute `+`, `-`, `*` and `/`. You should understand [why this is a problem] (http://dl.acm.org/citation.cfm?id=103163). Sinful gives the `Math` object the `add`, `sub`, `mul`, `div` and `intdiv` properties, whose values are all functions designed to perform fundamental arithmetic that is free from the problems of floating point representation (such as the fact that 0.1 + 0.2 !== 0.3). Examples:
 
 <pre>
@@ -201,6 +203,46 @@ Math.add(0.1, 0.2); // ↦ 0.3, instead of 0.30000000000000004
 Math.sub(0.3, 0.2); // ↦ 0.1, instead of 0.09999999999999998
 Math.mul(0.2, 0.1); // ↦ 0.02, instead of 0.020000000000000004
 Math.div(0.3, 0.1); // ↦ 3, instead of 2.9999999999999996
+</pre>
+
+
+### Math.max(...) / Math.max(numbers)
+
+ Takes a list of numbers, either specified each as a single parameter, or all as values of a single array, and returns the greatest one. If no arguments or an empty array are specified, returns `undefined`:
+
+<pre>
+Math.max([1, 2, 3, 4, 2, 3, 100, 1000000, 2, 4, 1, 2]); // ↦ 1000000
+Math.max(1, 2, 3, 4, 2, 3, 100, 1000000, 2, 4, 1, 2); // ↦ 1000000
+</pre>
+
+
+### Math.min(...) / Math.min(numbers)
+
+Takes parameters like `Math.max`, but returns the smallest value, or `undefined` if no values are given:
+
+<pre>
+Math.min(1, 2, 3, 4, 2, 3, -100, 1000000, 2, 4, 1, 2) // ↦ -100
+Math.min([1, 2, 3, 4, 2, 3, -100, 1000000, 2, 4, 1, 2]) // ↦ -100
+</pre>
+
+
+### Math.arithmeticMean(...) / Math.arithmeticMean(numbers)
+
+Takes parameters like `Math.max`, but returns their arithmetic mean, or `undefined` if the list has no values:
+
+<pre>
+Math.arithmeticMean(8, 10); // ↦ 9
+Math.arithmeticMean([8, 10]); // ↦ 9
+</pre>
+
+
+### Math.geometricMean(...) / Math.geometricMean(numbers)
+
+Takes parameters like `Math.max`, but returns their geometric mean, or `undefined` if the list has no values:
+
+<pre>
+Math.geometricMean([3, 4, 5]); // ↦ 7.745966692414834
+Math.geometricMean(3, 4, 5); // ↦ 7.745966692414834
 </pre>
 
 

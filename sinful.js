@@ -300,6 +300,72 @@ void function () {
 		(new Number(parts[0])).valueOf() :
 		div;
 	};
+
+	
+	function argv() {
+
+	    return Array.isArray(arguments[0][0]) === false ?
+			Array.prototype.slice.call(arguments[0]) :
+			arguments[0][0];
+	}
+
+
+	Math.max = function () {
+
+	    var numbers = argv(arguments);
+
+	    if (arguments.length === 0) {
+		return undefined;
+	    }
+
+	    return numbers.reduce(function (max, current) {
+		return max > current ? max : current;
+	    }, -Infinity);
+
+	};
+
+
+	Math.min = function () {
+
+	    var numbers = argv(arguments);
+
+	    if (arguments.length === 0) {
+		return undefined;
+	    }
+	    
+	    return numbers.reduce(function (min, current) {
+		return min < current ? min : current;
+	    }, Infinity);
+	};
+
+
+	Math.arithmeticMean = function () {
+
+	    var numbers = argv(arguments);
+
+	    if (arguments.length === 0) {
+		return undefined;
+	    }
+	    
+	    return numbers.reduce(function (sum, curr) {
+		return sum + curr;
+	    }, 0) / numbers.length;
+	};
+
+
+	Math.geometricMean = function () {
+
+	    var numbers = argv(arguments);
+
+	    if (arguments.length === 0) {
+		return undefined;
+	    }
+	    
+	    return Math.sqrt(numbers.reduce(function (product, curr) {
+		return product * curr;
+	    }, 1));
+	};
+
     }();
 
 }();
