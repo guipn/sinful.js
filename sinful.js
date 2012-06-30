@@ -94,7 +94,7 @@ void function () {
 		return undefined;
 	    }
 
-	    var copy = Array.isArray(thing) ? [] : {};
+	    var copy = Array.isArray(thing) ? [] : Object.create(Object.getPrototypeOf(thing));
 	    thingStack.push(thing);
 	    copyStack.push(copy);
 	    Object.getOwnPropertyNames(thing).forEach(function (prop) {
