@@ -22,363 +22,361 @@ void function () {
 
     String.ASCII = {
 
-	lowercase: 'abcdefghijklmnopqrstuvwxyz',
-	uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-	letters:   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-	digits:    '0123456789',
-	hexDigits: '0123456789abcdefABCDEF',
-	octDigits: '01234567',
+        lowercase: 'abcdefghijklmnopqrstuvwxyz',
+        uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        letters:   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        digits:    '0123456789',
+        hexDigits: '0123456789abcdefABCDEF',
+        octDigits: '01234567',
 
     };
 
 
     String.prototype.interp = function (expansions) {
 
-	var that = this;
+        var that = this; 
+        Object.getOwnPropertyNames(expansions).forEach(function (key) {
+            that = that.replace(new RegExp('\{' + key + '\}', 'g'), expansions[key]);
+        });
 
-	Object.getOwnPropertyNames(expansions).forEach(function (key) {
-	    that = that.replace(new RegExp('\{' + key + '\}', 'g'), expansions[key]);
-	});
-
-	return that;
+        return that;
     };
 
 
     String.prototype.reverse = function () {
-	return this.split('').reverse().join('');
+        return this.split('').reverse().join('');
     };
 
 
     String.prototype.words = function () {
-	return this.split(/\s+/);
+        return this.split(/\s+/);
     };
 
 
     String.prototype.echo = function (times) {
-	return times > 1 ? 
-		    new Array(times + 1).join(this) :
-		    [];
+        return times > 1 ? 
+                new Array(times + 1).join(this) :
+                [];
     };
 
 
     String.prototype.truncate = function (maxLen, suffix) {
 
-	maxLen = maxLen || 50;
-	suffix = suffix || '...';
+        maxLen = maxLen || 50;
+        suffix = suffix || '...';
 
-	if (maxLen - suffix.length < 0) {
-	    throw Error('The suffix "' + suffix + '" is wider than ' + maxLen);
-	}
+        if (maxLen - suffix.length < 0) {
+            throw Error('The suffix "' + suffix + '" is wider than ' + maxLen);
+        }
 
-	return this.length > maxLen ? 
-		this.slice(0, maxLen - suffix.length) + suffix :
-		this;
+        return this.length > maxLen ? 
+            this.slice(0, maxLen - suffix.length) + suffix :
+            this;
     };
 
 
 
     Object.prototype.deepCopy = function () {
 
-	var thingStack = [],
-	    copyStack  = [];
+        var thingStack = [],
+            copyStack  = [];
 
-	function clone (thing) {
+        function clone (thing) {
 
-	    if (thing ===  null           ||
-		typeof thing === 'number' ||
-		typeof thing === 'string' ||
-		typeof thing === 'boolean') {
+            if (thing ===  null           ||
+            typeof thing === 'number' ||
+            typeof thing === 'string' ||
+            typeof thing === 'boolean') {
 
-		return thing;
-	    }
+                return thing;
+            }
 
-	    if (typeof thing === 'undefined') {
-		return undefined;
-	    }
+            if (typeof thing === 'undefined') {
+                return undefined;
+            }
 
-	    var copy = Array.isArray(thing) ? [] : Object.create(Object.getPrototypeOf(thing));
+            var copy = Array.isArray(thing) ? [] : Object.create(Object.getPrototypeOf(thing));
 
-	    thingStack.push(thing);
-	    copyStack.push(copy);
+            thingStack.push(thing);
+            copyStack.push(copy);
 
-	    Object.getOwnPropertyNames(thing).forEach(function (prop) {
+            Object.getOwnPropertyNames(thing).forEach(function (prop) {
 
-		var thingOffset = thingStack.indexOf(thing[prop]);
+                var thingOffset = thingStack.indexOf(thing[prop]);
 
-		if (thingOffset === -1) {
-		    copy[prop] = clone(thing[prop]);
-		    thingStack.push(thing[prop]);
-		    copyStack.push(copy[prop]);
-		}
-		else {
-		    copy[prop] = copyStack[thingOffset];
-		}
-	    });
+                if (thingOffset === -1) {
+                    copy[prop] = clone(thing[prop]);
+                    thingStack.push(thing[prop]);
+                    copyStack.push(copy[prop]);
+                }
+                else {
+                    copy[prop] = copyStack[thingOffset];
+                }
+            });
 
-	    return copy;
-	};
+            return copy;
+        };
 
-	return clone(this);
+        return clone(this);
     };
 
 
 
     Function.prototype.curry = function () {
 
-	var that  = this,
-	    slice = Array.prototype.slice,
-	    args  = slice.call(arguments);
+        var that  = this,
+            slice = Array.prototype.slice,
+            args  = slice.call(arguments);
 
-	return function () {
-	   var allArgs = args.concat(slice.call(arguments));
-	   return that.apply(null, allArgs);
-	};
+        return function () {
+           var allArgs = args.concat(slice.call(arguments));
+           return that.apply(null, allArgs);
+        };
     };
 
 
     Function.prototype.compose = function (other) {
 
-	var that = this;
+        var that = this;
 
-	return function () { 
-	    return that(other.call(null, Array.prototype.slice.call(arguments)));
-	};
+        return function () { 
+            return that(other.call(null, Array.prototype.slice.call(arguments)));
+        };
     };
 
 
     Function.memoize = function (func, keyGen) {
 
-	var cache = {};
+        var cache = {};
 
-	keyGen = keyGen || function (args) {
-	    return JSON.stringify(args);
-	};
+        keyGen = keyGen || function (args) {
+            return JSON.stringify(args);
+        };
 
-	return function () {
+        return function () {
 
-	    var args = Array.prototype.slice.call(arguments), 
-		key  = keyGen(args);
+            var args = Array.prototype.slice.call(arguments), 
+                key  = keyGen(args);
 
-	    return (typeof cache[key] === 'undefined') ? 
-			cache[key] = func(args) :
-			cache[key];
-	};
+            return (typeof cache[key] === 'undefined') ? 
+                cache[key] = func(args) :
+                cache[key];
+        };
     };
 
 
 
     Array.range = function (start, end, step) {
 
-	var result = [], i = start;
+        var result = [], i = start;
 
-	if (step == 0) {
-	    throw Error('Step size must not evaluate to 0.');
-	}
+        if (step == 0) {
+            throw Error('Step size must not evaluate to 0.');
+        }
 
-	while (i <= end) {
-	    result.push(i);
-	    i += step;
-	}
+        while (i <= end) {
+            result.push(i);
+            i += step;
+        }
 
-	return result;
+        return result;
     };
 
 
     Array.discretize = function (start, end, count) {
 
-	return (count == 0) ?
-		    [] : 
-		    Array.range(start, end, (end - start) / count);
+        return (count == 0) ?
+                [] : 
+                Array.range(start, end, (end - start) / count);
     };
 
 
     Array.prototype.clone = function () {
-	return this.slice();
+        return this.slice();
     };
 
 
     Array.prototype.unique = function (search) {
 
-	search = search || this.indexOf;
+        search = search || this.indexOf;
 
-	return this.reduce(function (result, each) {
+        return this.reduce(function (result, each) {
 
-	    if (search.call(result, each) === -1) {
-		result.push(each);
-	    }
+            if (search.call(result, each) === -1) {
+                result.push(each);
+            }
 
-	    return result;
-
-	}, []);
+            return result;
+        }, []);
     };
 
 
 
     void function () {
 
-	// Computes the multiplier necessary to make x >= 1,
-	// effectively eliminating miscalculations caused by
-	// finite precision.
+        // Computes the multiplier necessary to make x >= 1,
+        // effectively eliminating miscalculations caused by
+        // finite precision.
 
-	function multiplier(x) {
+        function multiplier(x) {
 
-	    var parts = x.toString().split('.');
+            var parts = x.toString().split('.');
 
-	    if (parts.length < 2) {
-		return 1;
-	    }
+            if (parts.length < 2) {
+                return 1;
+            }
 
-	    return Math.pow(10, parts[1].length);
-	}
-
-
-	// Given a variable number of arguments, returns the maximum
-	// multiplier that must be used to normalize an operation involving
-	// all of them.
-
-	function correctionFactor() {
-
-	    return Array.prototype.reduce.call(arguments, function (prev, next) {
-
-		var mp = multiplier(prev),
-		    mn = multiplier(next);
-
-		return mp > mn ? mp : mn;
-
-	    }, -Infinity);
-
-	}
+            return Math.pow(10, parts[1].length);
+        }
 
 
-	Math.add = function () {
+        // Given a variable number of arguments, returns the maximum
+        // multiplier that must be used to normalize an operation involving
+        // all of them.
 
-	    var corrFactor = correctionFactor.apply(null, arguments);
+        function correctionFactor() {
 
-	    function cback(accum, curr, currI, O) {
-		return accum + corrFactor * curr;
-	    }
+            return Array.prototype.reduce.call(arguments, function (prev, next) {
 
-	    return Array.prototype.reduce.call(arguments, cback, 0) / corrFactor;
-	};
+                var mp = multiplier(prev),
+                    mn = multiplier(next);
 
-	Math.sub = function () {
+            return mp > mn ? mp : mn;
 
-	    var corrFactor = correctionFactor.apply(null, arguments),
-		first      = arguments[0];
+            }, -Infinity);
 
-	    function cback(accum, curr, currI, O) {
-		return accum - corrFactor * curr;
-	    }
-
-	    delete arguments[0];
-
-	    return Array.prototype.reduce.call(arguments, 
-		    cback, first * corrFactor) / corrFactor;
-
-	};
+        }
 
 
-	Math.mul = function () {
+        Math.add = function () {
 
-	    function cback(accum, curr, currI, O) {
+            var corrFactor = correctionFactor.apply(null, arguments);
 
-		var corrFactor = correctionFactor(accum, curr);
+            function cback(accum, curr, currI, O) {
+                return accum + corrFactor * curr;
+            }
 
-		return (accum * corrFactor) * (curr * corrFactor) /
-		    (corrFactor * corrFactor);
-	    }
+            return Array.prototype.reduce.call(arguments, cback, 0) / corrFactor;
+        };
 
-	    return Array.prototype.reduce.call(arguments, cback, 1);
-	};
+        Math.sub = function () {
 
+            var corrFactor = correctionFactor.apply(null, arguments),
+                first      = arguments[0];
 
-	Math.div = function () {
+            function cback(accum, curr, currI, O) {
+                return accum - corrFactor * curr;
+            }
 
-	    function cback(accum, curr, currI, O) {
+            delete arguments[0];
 
-		var corrFactor = correctionFactor(accum, curr);
+            return Array.prototype.reduce.call(arguments, 
+                    cback, first * corrFactor) / corrFactor;
 
-		return (accum * corrFactor) / (curr * corrFactor);
-	    }
-
-	    return Array.prototype.reduce.call(arguments, cback);
-	};
-
-
-	Math.intDiv = function (left, right) {
-
-	    var div   = Math.div(left, right),
-		parts = div.toString().split('.');
-
-	    return (parts.length) ?
-		(new Number(parts[0])).valueOf() :
-		div;
-	};
-
-	
-	function argv() {
-
-	    return Array.isArray(arguments[0][0]) === false ?
-			Array.prototype.slice.call(arguments[0]) :
-			arguments[0][0];
-	}
+        };
 
 
-	Math.max = function () {
+        Math.mul = function () {
 
-	    var numbers = argv(arguments);
+            function cback(accum, curr, currI, O) {
 
-	    if (arguments.length === 0) {
-		return undefined;
-	    }
+                var corrFactor = correctionFactor(accum, curr);
 
-	    return numbers.reduce(function (max, current) {
-		return max > current ? max : current;
-	    }, -Infinity);
+                return (accum * corrFactor) * (curr * corrFactor) /
+                    (corrFactor * corrFactor);
+            }
 
-	};
-
-
-	Math.min = function () {
-
-	    var numbers = argv(arguments);
-
-	    if (arguments.length === 0) {
-		return undefined;
-	    }
-	    
-	    return numbers.reduce(function (min, current) {
-		return min < current ? min : current;
-	    }, Infinity);
-	};
+            return Array.prototype.reduce.call(arguments, cback, 1);
+        };
 
 
-	Math.arithmeticMean = function () {
+        Math.div = function () {
 
-	    var numbers = argv(arguments);
+            function cback(accum, curr, currI, O) {
 
-	    if (arguments.length === 0) {
-		return undefined;
-	    }
-	    
-	    return numbers.reduce(function (sum, curr) {
-		return sum + curr;
-	    }, 0) / numbers.length;
-	};
+                var corrFactor = correctionFactor(accum, curr);
+
+                return (accum * corrFactor) / (curr * corrFactor);
+            }
+
+            return Array.prototype.reduce.call(arguments, cback);
+        };
 
 
-	Math.geometricMean = function () {
+        Math.intDiv = function (left, right) {
 
-	    var numbers = argv(arguments);
+            var div   = Math.div(left, right),
+                parts = div.toString().split('.');
 
-	    if (arguments.length === 0) {
-		return undefined;
-	    }
-	    
-	    return Math.sqrt(numbers.reduce(function (product, curr) {
-		return product * curr;
-	    }, 1));
-	};
+            return (parts.length) ?
+                (new Number(parts[0])).valueOf() :
+                div;
+        };
+
+
+        function argv() {
+
+            return Array.isArray(arguments[0][0]) === false ?
+                Array.prototype.slice.call(arguments[0]) :
+                arguments[0][0];
+        }
+
+
+        Math.max = function () {
+
+            var numbers = argv(arguments);
+
+            if (arguments.length === 0) {
+                return undefined;
+            }
+
+            return numbers.reduce(function (max, current) {
+                return max > current ? max : current;
+            }, -Infinity);
+
+        };
+
+
+        Math.min = function () {
+
+            var numbers = argv(arguments);
+
+            if (arguments.length === 0) {
+                return undefined;
+            }
+
+            return numbers.reduce(function (min, current) {
+                return min < current ? min : current;
+            }, Infinity);
+        };
+
+
+        Math.arithmeticMean = function () {
+
+            var numbers = argv(arguments);
+
+            if (arguments.length === 0) {
+                return undefined;
+            }
+
+            return numbers.reduce(function (sum, curr) {
+                return sum + curr;
+            }, 0) / numbers.length;
+        };
+
+
+        Math.geometricMean = function () {
+
+            var numbers = argv(arguments);
+
+            if (arguments.length === 0) {
+                return undefined;
+            }
+
+            return Math.sqrt(numbers.reduce(function (product, curr) {
+                return product * curr;
+            }, 1));
+        };
 
     }();
 
