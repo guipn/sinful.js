@@ -78,8 +78,10 @@ void function () {
 
 
     Object.prototype.deepCopy = function () {
-	var thingStack = [];
-	var copyStack = [];
+
+	var thingStack = [],
+	    copyStack  = [];
+
 	function clone (thing) {
 
 	    if (thing ===  null           ||
@@ -95,15 +97,20 @@ void function () {
 	    }
 
 	    var copy = Array.isArray(thing) ? [] : Object.create(Object.getPrototypeOf(thing));
+
 	    thingStack.push(thing);
 	    copyStack.push(copy);
+
 	    Object.getOwnPropertyNames(thing).forEach(function (prop) {
+
 		var thingOffset = thingStack.indexOf(thing[prop]);
-		if(thingOffset === -1){
+
+		if (thingOffset === -1) {
 		    copy[prop] = clone(thing[prop]);
 		    thingStack.push(thing[prop]);
 		    copyStack.push(copy[prop]);
-		}else{
+		}
+		else {
 		    copy[prop] = copyStack[thingOffset];
 		}
 	    });
@@ -112,9 +119,7 @@ void function () {
 	};
 
 	return clone(this);
-
     };
-
 
 
 
