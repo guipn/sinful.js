@@ -322,35 +322,6 @@ void function () {
         }
 
 
-        Math.max = function () {
-
-            var numbers = argv(arguments);
-
-            if (arguments.length === 0) {
-                return undefined;
-            }
-
-            return numbers.reduce(function (max, current) {
-                return max > current ? max : current;
-            }, -Infinity);
-
-        };
-
-
-        Math.min = function () {
-
-            var numbers = argv(arguments);
-
-            if (arguments.length === 0) {
-                return undefined;
-            }
-
-            return numbers.reduce(function (min, current) {
-                return min < current ? min : current;
-            }, Infinity);
-        };
-
-
         Math.arithmeticMean = function () {
 
             var numbers = argv(arguments);

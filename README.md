@@ -202,26 +202,6 @@ Math.div(0.3, 0.1); // ↦ 3, instead of 2.9999999999999996
 </pre>
 
 
-### Math.max(...) / Math.max(numbers)
-
- Takes a list of numbers, either specified each as a single parameter, or all as values of a single array, and returns the greatest one. If no arguments or an empty array are specified, returns `undefined`:
-
-<pre>
-Math.max([1, 2, 3, 4, 2, 3, 100, 1000000, 2, 4, 1, 2]); // ↦ 1000000
-Math.max(1, 2, 3, 4, 2, 3, 100, 1000000, 2, 4, 1, 2); // ↦ 1000000
-</pre>
-
-
-### Math.min(...) / Math.min(numbers)
-
-Takes parameters like `Math.max`, but returns the smallest value, or `undefined` if no values are given:
-
-<pre>
-Math.min(1, 2, 3, 4, 2, 3, -100, 1000000, 2, 4, 1, 2) // ↦ -100
-Math.min([1, 2, 3, 4, 2, 3, -100, 1000000, 2, 4, 1, 2]) // ↦ -100
-</pre>
-
-
 ### Math.arithmeticMean(...) / Math.arithmeticMean(numbers)
 
 Takes parameters like `Math.max`, but returns their arithmetic mean, or `undefined` if the list has no values:
