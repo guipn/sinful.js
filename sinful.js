@@ -83,19 +83,17 @@ void function () {
 
         function clone (thing) {
 
-            if (thing ===  null           ||
-            typeof thing === 'number' ||
-            typeof thing === 'string' ||
-            typeof thing === 'boolean') {
+            if (thing        ===  null     ||
+                typeof thing === 'number'  ||
+                typeof thing === 'string'  ||
+                typeof thing === 'boolean' ||
+                typeof thing === 'undefined') {
 
                 return thing;
             }
 
-            if (typeof thing === 'undefined') {
-                return undefined;
-            }
-
-            var copy = Array.isArray(thing) ? [] : Object.create(Object.getPrototypeOf(thing));
+            var copy = Array.isArray(thing) ?
+                        [] : Object.create(Object.getPrototypeOf(thing));
 
             thingStack.push(thing);
             copyStack.push(copy);
