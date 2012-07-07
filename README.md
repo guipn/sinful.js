@@ -122,7 +122,7 @@ negate.compose(square).compose(decrease)(10); // ↦ -81
 Together, the `curry` and `compose` functions bless the environment with strong reuse possibilities. New functions may be built out of existing ones with less verbosity than before, yet maintaining readability and clarity.
 
 
-## Function.prototype.iterate(target)
+### Function.prototype.iterate(target)
 
  Returns a function whose subsequent applications return the value of the original function applied to the last result:
 
@@ -194,7 +194,7 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 </pre>
 
 
-## Array.smallest(), Array.biggest()
+### Array.smallest(), Array.biggest()
 
  These return the array whose length is the smallest or biggest, respectively:
 
@@ -204,7 +204,7 @@ Array.smallest([1], [2, 2], [3, 3, 3]); // ↦ [3, 3, 3]
 </pre>
 
 
-## Array.zip
+### Array.zip
 
  Given arrays as parameters, returns an array whose length is that of the smallest one. Each element of the result is an array whose elements are the *ith* elements of each of the parameters (a tuple):
 
@@ -213,7 +213,7 @@ Array.zip([1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); // ↦ [[1, 2, 3], [1
 </pre>
 
 
-## Array.zipWith
+### Array.zipWith
 
  The same as `Array.zip`, only taking as initial parameter a function, and instead of returning 'tuples', returns the result of applying said function to the *ith* elements of each parameter array:
 
