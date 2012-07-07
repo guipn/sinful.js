@@ -122,6 +122,24 @@ negate.compose(square).compose(decrease)(10); // ↦ -81
 Together, the `curry` and `compose` functions bless the environment with strong reuse possibilities. New functions may be built out of existing ones with less verbosity than before, yet maintaining readability and clarity.
 
 
+## Function.prototype.iterate(target)
+
+ Returns a function whose subsequent applications return the value of the original function applied to the last result:
+
+ <pre>
+ function square(x) {
+    return x * x;
+ }
+
+ var sqs = square.iterate(2);
+
+ sqs(); // ↦ 4
+ sqs(); // ↦ 16
+ sqs(); // ↦ 256
+ sqs(); // ↦ 65536
+ </pre>
+
+
 ### Function.memoize(func, keyGen)
 
  Returns a new function which performs equivalent computation to that of `func`, but that caches results, potentially improving speed. The `keyGen` parameter is a function taking an array with the parameters received in a call to your function. If `keyGen` is falsy, the default behavior is to serialize such array with `JSON.stringify`. Example:
@@ -176,6 +194,38 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 </pre>
 
 
+## Array.smallest(), Array.biggest()
+
+ These return the array whose length is the smallest or biggest, respectively:
+
+<pre>
+Array.smallest([1], [2, 2], [3, 3, 3]); // ↦ [1]
+Array.smallest([1], [2, 2], [3, 3, 3]); // ↦ [3, 3, 3]
+</pre>
+
+
+## Array.zip
+
+ Given arrays as parameters, returns an array whose length is that of the smallest one. Each element of the result is an array whose elements are the *ith* elements of each of the parameters (a tuple):
+
+<pre>
+Array.zip([1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); // ↦ [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
+</pre>
+
+
+## Array.zipWith
+
+ The same as `Array.zip`, only taking as initial parameter a function, and instead of returning 'tuples', returns the result of applying said function to the *ith* elements of each parameter array:
+
+<pre>
+function plus(a, b, c) {
+    return a + b + c;
+}
+
+Array.zipWith(function (a, b, c) { return a + b + c; }, [1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); ↦ [6, 6, 6]
+</pre>
+
+
 ### Array.prototype.unique(search)
 
  Returns an array comprised of the unique values of this array. The `search` paramater is a function operating on an array bound to `this` and taking one parameter, which should return `-1` if the parameter is not in the array, and any other value otherwise.
@@ -183,7 +233,7 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
  If `search` is not specified, the `indexOf` function is used.
 
  <pre>
- [2, 2, 2, 3, 3, 1, 2, 3, 4, 1,3, 3, 4, 2, 1, 2, 3, 3, 4, 1].unique(); // ↦ [2, 3, 1, 4]
+ [2, 2, 2, 3, 3, 1, 2, 3, 4, 1, 3, 3, 4, 2, 1, 2, 3, 3, 4, 1].unique(); // ↦ [2, 3, 1, 4]
  </pre>
 
 

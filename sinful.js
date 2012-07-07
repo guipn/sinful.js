@@ -147,6 +147,16 @@ void function () {
     };
 
 
+    Function.prototype.iterate = function (last) {
+        
+        var that = this;
+
+        return function () {
+            return last = that(last);
+        };
+    };
+
+
     Function.memoize = function (func, keyGen) {
 
         var cache = {};
@@ -163,18 +173,6 @@ void function () {
             return (typeof cache[key] === 'undefined') ? 
                 cache[key] = func(args) :
                 cache[key];
-        };
-    };
-
-
-    // document.
-
-    Function.prototype.iterate = function (last) {
-        
-        var that = this;
-
-        return function () {
-            return last = that(last);
         };
     };
 
@@ -205,8 +203,6 @@ void function () {
     };
 
     
-    // document.
-
     Array.smallest = function () {
 
         var args = slice.call(arguments);
@@ -217,8 +213,6 @@ void function () {
     };
 
     
-    // document.
-
     Array.biggest = function () {
 
         var args = slice.call(arguments);
@@ -228,8 +222,6 @@ void function () {
         });
     };
 
-
-    // document.
 
     Array.zip = function () {
 
@@ -247,8 +239,6 @@ void function () {
         }, []);
     };
 
-
-    // document.
 
     Array.zipWith = function () {
 
