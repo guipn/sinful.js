@@ -105,7 +105,7 @@ plusOne(2); // ↦ 3
 </pre>
 
 
-### Function.prototype.compose()
+### Function.prototype.compose(g)
 
  Analogue of the `.` operator in Haskell, and the `∘` operator in Mathematics. 
  
@@ -194,7 +194,7 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 </pre>
 
 
-### Array.smallest(), Array.biggest()
+### Array.smallest(...), Array.biggest(...)
 
  These return the array whose length is the smallest or biggest, respectively:
 
@@ -204,7 +204,7 @@ Array.smallest([1], [2, 2], [3, 3, 3]); // ↦ [3, 3, 3]
 </pre>
 
 
-### Array.zip
+### Array.zip(...)
 
  Given arrays as parameters, returns an array whose length is that of the smallest one. Each element of the result is an array whose elements are the *ith* elements of each of the parameters (a tuple):
 
@@ -213,7 +213,7 @@ Array.zip([1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); // ↦ [[1, 2, 3], [1
 </pre>
 
 
-### Array.zipWith
+### Array.zipWith(f, ...)
 
  The same as `Array.zip`, only taking as initial parameter a function, and instead of returning 'tuples', returns the result of applying said function to the *ith* elements of each parameter array:
 
