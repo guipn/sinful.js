@@ -19,6 +19,11 @@
 
 void function () {
 
+    var map    = Array.prototype.map,
+        slice  = Array.prototype.slice,
+        filter = Array.prototype.filter,
+        reduce = Array.prototype.reduce;
+
 
     String.ASCII = {
 
@@ -123,7 +128,6 @@ void function () {
     Function.prototype.curry = function () {
 
         var that  = this,
-            slice = Array.prototype.slice,
             args  = slice.call(arguments);
 
         return function () {
@@ -138,7 +142,7 @@ void function () {
         var that = this;
 
         return function () { 
-            return that(other.call(null, Array.prototype.slice.call(arguments)));
+            return that(other.call(null, slice.call(arguments)));
         };
     };
 
@@ -153,7 +157,7 @@ void function () {
 
         return function () {
 
-            var args = Array.prototype.slice.call(arguments), 
+            var args = slice.call(arguments), 
                 key  = keyGen(args);
 
             return (typeof cache[key] === 'undefined') ? 
@@ -186,6 +190,52 @@ void function () {
         return (count == 0) ?
                 [] : 
                 Array.range(start, end, (end - start) / count);
+    };
+
+    
+    // document.
+
+    Array.smallest = function () {
+
+        var args = slice.call(arguments);
+
+        return args.reduce(function (p, c) {
+            return (p.length < c.length) ? p : c;
+        });
+    };
+
+    
+    // document.
+
+    Array.biggest = function () {
+
+        var args = slice.call(arguments);
+
+        return args.reduce(function (p, c) {
+            return (p.length > c.length) ? p : c;
+        });
+    };
+
+
+    // document.
+
+    Array.zip = function () {
+
+        var args     = slice.call(arguments),
+            smallest = Array.smallest.apply(null, args),
+            result   = [];
+
+        smallest.forEach(function (v, i, a) {
+
+            var ith = args.map(function (array) {
+                return array[i];
+            });
+
+            result.push(ith);
+
+        });
+
+        return result;
     };
 
 
@@ -234,7 +284,7 @@ void function () {
 
         function correctionFactor() {
 
-            return Array.prototype.reduce.call(arguments, function (prev, next) {
+            return reduce.call(arguments, function (prev, next) {
 
                 var mp = multiplier(prev),
                     mn = multiplier(next);
@@ -254,7 +304,7 @@ void function () {
                 return accum + corrFactor * curr;
             }
 
-            return Array.prototype.reduce.call(arguments, cback, 0) / corrFactor;
+            return reduce.call(arguments, cback, 0) / corrFactor;
         };
 
         Math.sub = function () {
@@ -268,7 +318,7 @@ void function () {
 
             delete arguments[0];
 
-            return Array.prototype.reduce.call(arguments, 
+            return reduce.call(arguments, 
                     cback, first * corrFactor) / corrFactor;
 
         };
@@ -284,7 +334,7 @@ void function () {
                     (corrFactor * corrFactor);
             }
 
-            return Array.prototype.reduce.call(arguments, cback, 1);
+            return reduce.call(arguments, cback, 1);
         };
 
 
@@ -297,7 +347,7 @@ void function () {
                 return (accum * corrFactor) / (curr * corrFactor);
             }
 
-            return Array.prototype.reduce.call(arguments, cback);
+            return reduce.call(arguments, cback);
         };
 
 
@@ -315,8 +365,8 @@ void function () {
         function argv() {
 
             return Array.isArray(arguments[0][0]) === false ?
-                Array.prototype.slice.call(arguments[0]) :
-                arguments[0][0];
+                        slice.call(arguments[0]) :
+                        arguments[0][0];
         }
 
 
