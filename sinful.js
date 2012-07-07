@@ -167,6 +167,18 @@ void function () {
     };
 
 
+    // document.
+
+    Function.prototype.iterate = function (last) {
+        
+        var that = this;
+
+        return function () {
+            return last = that(last);
+        };
+    };
+
+
 
     Array.range = function (start, end, step) {
 
@@ -233,6 +245,26 @@ void function () {
             return prev;
 
         }, []);
+    };
+
+
+    // document.
+
+    Array.zipWith = function () {
+
+        var zipper   = arguments[0];
+            args     = slice.call(arguments, 1),
+            smallest = Array.smallest.apply(null, args);
+
+        return smallest.reduce(function (prev, cur, i) {
+
+            prev.push(zipper.apply(null, args.map(function (array) {
+                return array[i];
+            })));
+
+            return prev;
+        }, []);
+
     };
 
 
