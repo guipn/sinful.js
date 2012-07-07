@@ -222,20 +222,17 @@ void function () {
     Array.zip = function () {
 
         var args     = slice.call(arguments),
-            smallest = Array.smallest.apply(null, args),
-            result   = [];
+            smallest = Array.smallest.apply(null, args);
 
-        smallest.forEach(function (v, i, a) {
+        return smallest.reduce(function (prev, cur, i) {
 
-            var ith = args.map(function (array) {
+            prev.push(args.map(function (array) {
                 return array[i];
-            });
+            }));
 
-            result.push(ith);
+            return prev;
 
-        });
-
-        return result;
+        }, []);
     };
 
 
