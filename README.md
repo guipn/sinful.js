@@ -218,11 +218,11 @@ Array.zip([1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); // ↦ [[1, 2, 3], [1
  The same as `Array.zip`, only taking as initial parameter a function, and instead of returning 'tuples', returns the result of applying said function to the *ith* elements of each parameter array:
 
 <pre>
-function plus(a, b, c) {
+function add(a, b, c) {
     return a + b + c;
 }
 
-Array.zipWith(function (a, b, c) { return a + b + c; }, [1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); ↦ [6, 6, 6]
+Array.zipWith(add, [1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); ↦ [6, 6, 6]
 </pre>
 
 
