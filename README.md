@@ -126,18 +126,18 @@ Together, the `curry` and `compose` functions bless the environment with strong 
 
  Returns a function whose subsequent applications return the value of the original function applied to the last result:
 
- <pre>
- function square(x) {
-    return x * x;
- }
+<pre>
+function square(x) {
+   return x * x;
+}
 
- var sqs = square.iterate(2);
+var sqs = square.iterate(2);
 
- sqs(); // ↦ 4
- sqs(); // ↦ 16
- sqs(); // ↦ 256
- sqs(); // ↦ 65536
- </pre>
+sqs(); // ↦ 4
+sqs(); // ↦ 16
+sqs(); // ↦ 256
+sqs(); // ↦ 65536
+</pre>
 
 
 ### Function.memoize(func, keyGen)

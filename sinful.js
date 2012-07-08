@@ -22,7 +22,8 @@ void function () {
     var map    = Array.prototype.map,
         slice  = Array.prototype.slice,
         filter = Array.prototype.filter,
-        reduce = Array.prototype.reduce;
+        reduce = Array.prototype.reduce,
+        own    = Object.getOwnPropertyNames;
 
 
     String.ASCII = {
@@ -79,6 +80,20 @@ void function () {
             this;
     };
 
+
+
+    // document.
+
+    Object.prototype.mapOwn = function (fun, thisArg) {
+        return own.apply(this).map(fun, thisArg);
+    };
+
+
+    // document.
+
+    Object.prototype.forEachOwn = function (fun, thisArg) {
+        return own.apply(this).forEach(fun, thisArg);
+    };
 
 
     Object.prototype.deepCopy = function () {
@@ -275,6 +290,22 @@ void function () {
 
             return result;
         }, []);
+    };
+
+
+
+    // document.
+
+    Number.prototype.limit = function (lower, upper) {
+
+        if (this > upper) {
+            return upper;
+        } 
+        else if (this < lower) {
+            return lower;
+        }
+
+        return this.valueOf();
     };
 
 
