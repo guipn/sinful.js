@@ -1,12 +1,20 @@
 # sinful.js
 
-Sinful will enhance the JavaScript environment in which it is run, providing it with functionalities that are often useful.
+Sinful will enhance the JavaScript environment in which it is run, providing it with functionalities that are often useful. Some of these include:
 
-One of the ways in which this is done is augmenting existing prototypes, which is something that most priests and pastors will frown upon.
++ Deep copying of objects;
++ Partial application and function composition;
++ Unobtrusive, automatic memoization;
++ Tuple zipping and 'zip-withing';
++ Basic arithmetic that is free of floating point errors;
++ ...
 
-Sinful assumes the environment is a conformant ES5 implementation. For the sake of clarity and brevity, no checks or safeguards are employed. I assume that you know what you're doing.
+One of the ways in which this is done is augmenting existing prototypes, which is something that most priests and pastors will frown upon. *The rationale* is that with JavaScript supporting object orientation, we should enjoy it when possible. While current production-ready libraries are right to seek harmony through the ugliness of namespacing, sinful.js is about enabling the writing of beautiful, flowing code. 
 
-Here are the enhancements it introduces:
+While `$_lib_mess.String.echo('bar', 3);` is safe(r) and not aesthetically terrible, it surely is not as beautiful as `'bar'.echo(3);`.
+
+JavaScript's motherland is permanently dynamic and often dangerous, and yes, we should strive to remain sane. I trust that users of this library know what code they're running and when. Nevertheless, I'm considering adding an all-or-nothing principle of no contention.
+
 
 
 ## Strings
