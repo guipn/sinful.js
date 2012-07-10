@@ -1,21 +1,12 @@
 // sinful.js
 // ----------
 //
-// Sinful will enhance the JavaScript environment in which it is run,
-// providing it with functionalities that are often useful.
-//
-// One of the ways in which this is done is augmenting existing prototypes,
-// which is something that most priests and pastors will frown upon.
-//
-// Sinful assumes the environment is a conformant ES5 implementation.
-// For the sake of clarity and brevity, no checks or safeguards are employed.
-//
-// I assume that you know what you're doing. For legal information, refer to LEGAL.
+// For the rationale, refer to http://github.com/guipn/sinful.js
 //
 // gdjs
-//
 ///////
 
+'use strict';
 
 void function () {
 
@@ -33,14 +24,16 @@ void function () {
         letters:   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
         digits:    '0123456789',
         hexDigits: '0123456789abcdefABCDEF',
-        octDigits: '01234567',
+        octDigits: '01234567'
 
     };
 
+ 
+    // Remembered where I saw this: Crockford's The Good Parts 
 
     String.prototype.interp = function (expansions) {
 
-        var that = this; 
+        var that = this;
         Object.getOwnPropertyNames(expansions).forEach(function (key) {
             that = that.replace(new RegExp('\{' + key + '\}', 'g'), expansions[key]);
         });
@@ -60,7 +53,7 @@ void function () {
 
 
     String.prototype.echo = function (times) {
-        return times > 1 ? 
+        return times > 1 ?
                 new Array(times + 1).join(this) :
                 '';
     };
@@ -72,12 +65,12 @@ void function () {
         suffix = suffix || '...';
 
         if (maxLen - suffix.length < 0) {
-            throw Error('The suffix "' + suffix + '" is wider than ' + maxLen);
+            throw new Error('The suffix "' + suffix + '" is wider than ' + maxLen);
         }
 
-        return this.length > maxLen ? 
-            this.slice(0, maxLen - suffix.length) + suffix :
-            this;
+        return this.length > maxLen ?
+                this.slice(0, maxLen - suffix.length) + suffix :
+                this;
     };
 
 
@@ -101,7 +94,7 @@ void function () {
         var thingStack = [],
             copyStack  = [];
 
-        function clone (thing) {
+        function clone(thing) {
 
             if (thing        ===  null     ||
                 typeof thing === 'number'  ||
@@ -133,7 +126,7 @@ void function () {
             });
 
             return copy;
-        };
+        }
 
         return clone(this);
     };
@@ -146,8 +139,8 @@ void function () {
             args  = slice.call(arguments);
 
         return function () {
-           var allArgs = args.concat(slice.call(arguments));
-           return that.apply(null, allArgs);
+            var allArgs = args.concat(slice.call(arguments));
+            return that.apply(null, allArgs);
         };
     };
 
@@ -450,5 +443,3 @@ void function () {
     }();
 
 }();
-
-
