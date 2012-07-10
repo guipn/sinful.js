@@ -148,7 +148,7 @@ void function () {
         var that = this;
 
         return function () { 
-            return that(other.call(null, slice.call(arguments)));
+            return that(other.apply(null, slice.call(arguments)));
         };
     };
 
