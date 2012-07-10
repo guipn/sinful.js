@@ -10,10 +10,8 @@
 
 void function () {
 
-    var map    = Array.prototype.map,
+    var reduce = Array.prototype.reduce,
         slice  = Array.prototype.slice,
-        filter = Array.prototype.filter,
-        reduce = Array.prototype.reduce,
         own    = Object.getOwnPropertyNames;
 
 
