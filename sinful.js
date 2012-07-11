@@ -97,6 +97,8 @@ void function () {
 
         function clone(thing) {
 
+            var copy;
+
             if (thing        ===  null     ||
                 typeof thing === 'number'  ||
                 typeof thing === 'string'  ||
@@ -106,8 +108,8 @@ void function () {
                 return thing;
             }
 
-            var copy = Array.isArray(thing) ?
-                        [] : Object.create(Object.getPrototypeOf(thing));
+            copy = Array.isArray(thing) ?
+                    [] : Object.create(Object.getPrototypeOf(thing));
 
             thingStack.push(thing);
             copyStack.push(copy);
@@ -294,27 +296,31 @@ void function () {
 
 
     Array.prototype.partition = function (length) {
-        if (length <= 0) {
+
+        var result, each;
+
+        if (typeof length === 'undefined' || length <= 0) {
             return [];
         }
-        else {
-            var clone = this.slice(0); // Don't mutate
-            var result = [];
-            var tmp = [];
-            for (var i = 0; i < clone.length;) {
-                tmp.push(clone.shift());
-                if (tmp.length === length) {
-                    result.push(tmp);
-                    tmp = [];
-                }
+
+        result = [];
+        each   = [];
+
+        this.forEach(function (value) {
+
+            each.push(value);
+
+            if (each.length === length) {
+                result.push(each);
+                each = [];
             }
-            if (tmp.length > 0) {
-                // Leftovers
-                result.push(tmp);
-            }
-            return result;
-        }
+
+        });
+
+        return result.concat(each.length > 0 ? [ each ] : []);
     };
+
+
 
     // document.
 
