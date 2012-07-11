@@ -51,7 +51,9 @@ void function () {
 
 
     String.prototype.repeat = function (times, sep) {
-	if (!sep) sep = '';
+
+        sep = sep || '';
+	
         return times > 1 ?
                 new Array(times + 1).join(this + sep) :
                 '';
