@@ -145,10 +145,16 @@ void function () {
 
     Function.prototype.compose = function (other) {
 
-        var that = this;
+        var chain = [ this ].concat(slice.call(arguments));
 
         return function () { 
-            return that(other.apply(null, slice.call(arguments)));
+
+            return chain.reduceRight(function (prev, curr) {
+
+                return [ curr.apply(null, prev) ];
+
+            }, slice.call(arguments)).pop();
+            
         };
     };
 
