@@ -291,6 +291,28 @@ void function () {
     };
 
 
+    Array.prototype.partition = function (length) {
+        if (length <= 0) {
+            return [];
+        }
+        else {
+            var clone = this.slice(0); // Don't mutate
+            var result = [];
+            var tmp = [];
+            for (var i = 0; i < clone.length;) {
+                tmp.push(clone.shift());
+                if (tmp.length === length) {
+                    result.push(tmp);
+                    tmp = [];
+                }
+            }
+            if (tmp.length > 0) {
+                // Leftovers
+                result.push(tmp);
+            }
+            return result;
+        }
+    };
 
     // document.
 

@@ -246,6 +246,15 @@ Array.zipWith(add, [1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); ↦ [6, 6, 6
  </pre>
 
 
+### Array.prototype.partition(length)
+
+ Returns a new array containing this array broken up into subarrays of size `length`.
+
+<pre>
+ [1, 2, 3, 4, 5].partition(2); // ↦ [[1, 2], [3, 4], [5]]
+</pre>
+
+
 
 ## Math
 
