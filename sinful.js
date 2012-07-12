@@ -138,9 +138,9 @@ void function () {
 
     Function.prototype.curry = function () {
 
-        var that = this,
+        var that  = this,
             arity = this.length,
-            args = slice.call(arguments);
+            args  = slice.call(arguments);
         
         return function () {
 
@@ -149,9 +149,7 @@ void function () {
             return allArgs.length >= arity ? 
                 that.apply(this, allArgs) :
                 that.curry.apply(that, allArgs);
-
         };
-
     };
 
 
