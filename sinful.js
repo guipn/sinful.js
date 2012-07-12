@@ -79,14 +79,14 @@ void function () {
     // document.
 
     Object.prototype.mapOwn = function (fun, thisArg) {
-        return own.apply(this).map(fun, thisArg);
+        return own.call(null, this).map(fun, thisArg);
     };
 
 
     // document.
 
     Object.prototype.forEachOwn = function (fun, thisArg) {
-        return own.apply(this).forEach(fun, thisArg);
+        return own.call(null, this).forEach(fun, thisArg);
     };
 
 
