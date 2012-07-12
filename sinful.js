@@ -50,9 +50,10 @@ void function () {
     };
 
 
-    String.prototype.echo = function (times) {
+    String.prototype.repeat = function (times, sep) {
+	if (!sep) sep = '';
         return times > 1 ?
-                new Array(times + 1).join(this) :
+                new Array(times + 1).join(this + sep) :
                 '';
     };
 

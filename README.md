@@ -63,12 +63,13 @@ String.ASCII.octDigits; // ↦ '01234567'
 </pre>
 
 
-### String.prototype.echo(times)
+### String.prototype.repeat(times, sep)
 
- Returns a string made of `times` repetitions of this string:
+ Returns a string made of `times` repetitions of this string, separated by `sep`:
 
 <pre>
-'echo\n'.echo(3); // ↦ 'echo\necho\necho'
+'echo\n'.repeat(3); // ↦ 'echo\necho\necho'
+'echo'.repeat(3, '\n'); // ↦ 'echo\necho\necho'
 </pre>
 
 
