@@ -54,7 +54,7 @@ void function () {
 
         sep = sep || '';
 	
-        return times > 1 ?
+        return times > 0 ?
                 new Array(times + 1).join(this + sep) :
                 '';
     };
@@ -318,6 +318,13 @@ void function () {
         });
 
         return result.concat(each.length > 0 ? [ each ] : []);
+    };
+
+
+    // document.
+
+    Array.prototype.last = function () {
+        return this[ this.length - 1 ];
     };
 
 
