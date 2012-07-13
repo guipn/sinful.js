@@ -136,19 +136,19 @@ void function () {
 
 
 
-    Function.prototype.curry = function () {
+    Function.prototype.curry = function (depth) {
 
         var that = this,
-            arity = this.length,
-            args = slice.call(arguments);
+            args = slice.call(arguments, 1),
+            arity = depth == null ? this.length : depth;
         
         return function () {
 
-            var allArgs = args.concat(slice.call(arguments))
+            var allArgs = args.concat(slice.call(arguments));
 
             return allArgs.length >= arity ? 
                 that.apply(this, allArgs) :
-                that.curry.apply(that, allArgs);
+                that.curry.apply(that, [arity].concat(allArgs));
 
         };
 
