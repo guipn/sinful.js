@@ -79,14 +79,10 @@ void function () {
 
 
 
-    // document.
-
     Object.prototype.mapOwn = function (fun, thisArg) {
         return own(this).map(fun, thisArg);
     };
 
-
-    // document.
 
     Object.prototype.forEachOwn = function (fun, thisArg) {
         return own(this).forEach(fun, thisArg);
@@ -214,8 +210,6 @@ void function () {
         };
     };
 
-
-    // document.
 
     Function.liberate = bind.call(bind, Function.prototype.call);
 
@@ -346,8 +340,6 @@ void function () {
         return result.concat(each.length > 0 ? [ each ] : []);
     };
 
-
-    // document.
 
     Array.prototype.last = function () {
         return this[ this.length - 1 ];

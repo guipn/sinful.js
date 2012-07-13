@@ -26,8 +26,8 @@ JavaScript's motherland is permanently dynamic and often dangerous, and yes, we 
 <pre>
 String.ASCII.lowercase; // ↦ 'abcdefghijklmnopqrstuvwxyz'
 String.ASCII.uppercase; // ↦ 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-String.ASCII.letters; // ↦ 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-String.ASCII.digits; // ↦ '0123456789' 
+String.ASCII.letters;   // ↦ 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+String.ASCII.digits;    // ↦ '0123456789' 
 String.ASCII.hexDigits; // ↦ '0123456789abcdefABCDEF'
 String.ASCII.octDigits; // ↦ '01234567'
 </pre>
@@ -63,17 +63,17 @@ String.ASCII.octDigits; // ↦ '01234567'
 </pre>
 
 
-### String.prototype.repeat(times, sep)
+### String.prototype.repeat(times, [sep])
 
  Returns a string made of `times` repetitions of this string, separated by `sep`:
 
 <pre>
-'echo\n'.repeat(3); // ↦ 'echo\necho\necho'
+'echo\n'.repeat(3);     // ↦ 'echo\necho\necho'
 'echo'.repeat(3, '\n'); // ↦ 'echo\necho\necho'
 </pre>
 
 
-### String.prototype.truncate(maxLen, suffix)
+### String.prototype.truncate(maxLen, [suffix])
 
  Returns a string whose length is not greater than `maxLen`. If this string's length is greater than `maxLen`, the truncation `suffix` is appended to its end. If `maxLen` is falsy, `50` is used. If `suffix` is falsy, `'...'` is used.
 
@@ -87,31 +87,38 @@ String.ASCII.octDigits; // ↦ '01234567'
 
 ### Object.prototype.deepCopy()
 
-Recursively mirrors this object's own property/values:
+ Recursively mirrors this object's own property/values:
 
 <pre>
 
 {foo: [{bar: "bar", ref: null}]}.deepCopy(); // ↦ {foo: [{bar: "bar", ref: null}]} (different ones)
 
-[[1, 2, [3, 4]], [3, [5, 6]]].deepCopy(); // ↦ [[1, 2, [3, 4]], [3, [5, 6]]] (different ones)
+[[1, 2, [3, 4]], [3, [5, 6]]].deepCopy();    // ↦ [[1, 2, [3, 4]], [3, [5, 6]]] (different ones)
 
 </pre>
+
+
+### Object.prototype.mapOwn(func, [self])
+
+ Returns an array whose elements are the results of calling `func` on every string that is a property name of `this`. At every iteration, `func` receives the name of a property, its index within the complete array of properties and the array of properties itself, in that order. The optional parameter `self` is bound to `this` in `func`, for every call. Directly equivalent to saying `Object.getOwnPropertyNames(obj).map(func, self)`.
+
+<pre>
+({ foo: 10, bar: false }).mapOwn(function (prop, i, props) { 
+    return prop.toUpperCase(); 
+}) // ↦ ["FOO", "BAR"]
+</pre>
+
+
+### Object.prototype.forEachOwn(func, [self])
+
+ The same as `mapOwn`, only no array is returned.
 
 
 
 ## Functions
 
-### Function.prototype.curry()
+### Function.prototype.curry([depth])
 
- Partially applies this function to the given arguments and returns that new function:
-
-<pre>
-function plus(one, other) { return one + other; }
-
-var plusOne = plus.curry(1);
-
-plusOne(2); // ↦ 3
-</pre>
 
 
 ### Function.prototype.compose(g)
@@ -149,7 +156,7 @@ sqs(); // ↦ 65536
 </pre>
 
 
-### Function.memoize(func, keyGen)
+### Function.memoize(func, [keyGen])
 
  Returns a new function which performs equivalent computation to that of `func`, but that caches results, potentially improving speed. The `keyGen` parameter is a function taking an array with the parameters received in a call to your function. If `keyGen` is falsy, the default behavior is to serialize such array with `JSON.stringify`. Example:
 
@@ -181,6 +188,23 @@ fib(25); // 1 function call made
  Overall, [pure functions] (http://www.haskell.org/haskellwiki/Functional_programming#Purity) that are referentially transparent are great candidates. The `Function.memoize` function introduces very little noise, and does not touch the original function's implementation at all. Applying it is only a matter of writing `var foo = Function.memoize(foo);`, and removing memoization is as easy as deleting that statement.
 
 
+### Function.liberate(func)
+
+ Creates a function whose invocation causes the invocation of `func`. Its first parameter is bound to `this` in said invocation, and the remaining are passed as arguments. This can be used to make code clearer, because it frees the writer from saying `Lender.prototype.func.apply(foo, [args])` or `Lender.prototype.call(foo, ...)`:
+
+<pre>
+var slice = Function.liberate(Array.prototype.slice);
+
+function variadic() {
+
+    var args = slice(arguments); // As opposed to slice.call(arguments);
+
+    // ...
+
+}
+</pre>
+
+
 
 ## Arrays
 
@@ -209,7 +233,7 @@ Array.discretize(0, 10, 10); // ↦ [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 <pre>
 Array.smallest([1], [2, 2], [3, 3, 3]); // ↦ [1]
-Array.smallest([1], [2, 2], [3, 3, 3]); // ↦ [3, 3, 3]
+Array.biggest([1], [2, 2], [3, 3, 3]);  // ↦ [3, 3, 3]
 </pre>
 
 
@@ -235,7 +259,7 @@ Array.zipWith(add, [1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); ↦ [6, 6, 6
 </pre>
 
 
-### Array.prototype.unique(search)
+### Array.prototype.unique([search])
 
  Returns an array comprised of the unique values of this array. The `search` paramater is a function operating on an array bound to `this` and taking one parameter, which should return `-1` if the parameter is not in the array, and any other value otherwise.
 
@@ -253,6 +277,11 @@ Array.zipWith(add, [1, 1, 1, 1], [2, 2, 2], [3, 3, 3, 3, 3, 3, 3]); ↦ [6, 6, 6
 <pre>
  [1, 2, 3, 4, 5].partition(2); // ↦ [[1, 2], [3, 4], [5]]
 </pre>
+
+
+### Array.prototype.last()
+
+ Sugar for `foo[ foo.length - 1 ]`.
 
 
 
@@ -275,7 +304,7 @@ Math.div(0.3, 0.1); // ↦ 3, instead of 2.9999999999999996
 Takes parameters like `Math.max`, but returns their arithmetic mean, or `undefined` if the list has no values:
 
 <pre>
-Math.arithmeticMean(8, 10); // ↦ 9
+Math.arithmeticMean(8, 10);   // ↦ 9
 Math.arithmeticMean([8, 10]); // ↦ 9
 </pre>
 
@@ -286,7 +315,23 @@ Takes parameters like `Math.max`, but returns their geometric mean, or `undefine
 
 <pre>
 Math.geometricMean([3, 4, 5]); // ↦ 7.745966692414834
-Math.geometricMean(3, 4, 5); // ↦ 7.745966692414834
+Math.geometricMean(3, 4, 5);   // ↦ 7.745966692414834
+</pre>
+
+
+
+## Numbers
+
+### Number.prototype.limit(lower, upper)
+
+ Limits this number's value to the given bounds:
+
+<pre>
+var nmb = 100;
+
+nmb.limit(0, 50);    // ↦ 50
+nmb.limit(50, 150);  // ↦ 100
+nmb.limit(150, 200); // ↦ 150
 </pre>
 
 
