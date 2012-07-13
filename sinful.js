@@ -138,13 +138,20 @@ void function () {
 
     Function.prototype.curry = function () {
 
-        var that  = this,
-            args  = slice.call(arguments);
-
+        var that = this,
+            arity = this.length,
+            args = slice.call(arguments);
+        
         return function () {
-            var allArgs = args.concat(slice.call(arguments));
-            return that.apply(null, allArgs);
+
+            var allArgs = args.concat(slice.call(arguments))
+
+            return allArgs.length >= arity ? 
+                that.apply(this, allArgs) :
+                that.curry.apply(that, allArgs);
+
         };
+
     };
 
 
