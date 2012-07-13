@@ -12,8 +12,7 @@ void function () {
     'use strict';
 
     var own      = Object.getOwnPropertyNames,
-        bind     = Function.prototype.bind,
-        liberate = bind.call(bind, Function.prototype.call),
+        liberate = Function.prototype.bind.bind(Function.prototype.call),
         reduce   = liberate(Array.prototype.reduce),
         slice    = liberate(Array.prototype.slice);
 
@@ -30,7 +29,7 @@ void function () {
     };
 
  
-    // Remembered where I saw this: Crockford's The Good Parts 
+   // Remembered where I saw this: Crockford's The Good Parts 
 
     String.prototype.interp = function (expansions) {
 
@@ -211,7 +210,7 @@ void function () {
     };
 
 
-    Function.liberate = bind.call(bind, Function.prototype.call);
+    Function.liberate = liberate;
 
 
 
