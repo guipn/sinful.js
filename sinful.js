@@ -140,10 +140,9 @@ void function () {
 
         var that = this,
             arity = this.length,
-            args = slice.call(arguments),
-            currier;
+            args = slice.call(arguments);
         
-        currier = function () {
+        return function () {
 
             var allArgs = args.concat(slice.call(arguments))
 
@@ -153,7 +152,6 @@ void function () {
 
         };
 
-        return currier;
     };
 
 
