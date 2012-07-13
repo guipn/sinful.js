@@ -10,11 +10,11 @@
 
 void function () {
 
-    var bind     = Function.prototype.bind,
+    var own      = Object.getOwnPropertyNames,
+        bind     = Function.prototype.bind,
         liberate = bind.call(bind, Function.prototype.call),
         reduce   = liberate(Array.prototype.reduce),
-        slice    = liberate(Array.prototype.slice),
-        own      = liberate(Object.getOwnPropertyNames);
+        slice    = liberate(Array.prototype.slice);
 
 
     String.ASCII = {
@@ -34,7 +34,7 @@ void function () {
     String.prototype.interp = function (expansions) {
 
         var that = this;
-        Object.getOwnPropertyNames(expansions).forEach(function (key) {
+        own(expansions).forEach(function (key) {
             that = that.replace(new RegExp('\{' + key + '\}', 'g'), expansions[key]);
         });
 
@@ -81,14 +81,14 @@ void function () {
     // document.
 
     Object.prototype.mapOwn = function (fun, thisArg) {
-        return own(null, this).map(fun, thisArg);
+        return own(this).map(fun, thisArg);
     };
 
 
     // document.
 
     Object.prototype.forEachOwn = function (fun, thisArg) {
-        return own(null, this).forEach(fun, thisArg);
+        return own(this).forEach(fun, thisArg);
     };
 
 
