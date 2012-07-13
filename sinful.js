@@ -216,7 +216,7 @@ void function () {
         var result = [], i = start;
 
         if (step == 0) {
-            throw Error('Step size must not evaluate to 0.');
+            throw new Error('Step size must not evaluate to 0.');
         }
 
         while (i <= end) {
