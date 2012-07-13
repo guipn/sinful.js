@@ -10,10 +10,11 @@
 
 void function () {
 
-    var reduce = Array.prototype.reduce,
-        slice  = Array.prototype.slice,
-        own    = Object.getOwnPropertyNames,
-        bind   = Function.prototype.bind;
+    var bind     = Function.prototype.bind,
+        liberate = bind.call(bind, Function.prototype.call),
+        reduce   = liberate(Array.prototype.reduce),
+        slice    = liberate(Array.prototype.slice),
+        own      = liberate(Object.getOwnPropertyNames);
 
 
     String.ASCII = {
@@ -80,14 +81,14 @@ void function () {
     // document.
 
     Object.prototype.mapOwn = function (fun, thisArg) {
-        return own.call(null, this).map(fun, thisArg);
+        return own(null, this).map(fun, thisArg);
     };
 
 
     // document.
 
     Object.prototype.forEachOwn = function (fun, thisArg) {
-        return own.call(null, this).forEach(fun, thisArg);
+        return own(null, this).forEach(fun, thisArg);
     };
 
 
@@ -149,11 +150,11 @@ void function () {
         curry = function (arity) {
 
             var that = this,
-                args = slice.call(arguments, 1);
+                args = slice(arguments, 1);
             
             return function () {
 
-                var allArgs = args.concat(slice.call(arguments));
+                var allArgs = args.concat(slice(arguments));
 
                 return allArgs.length >= arity ? 
                     that.apply(this, allArgs) :
@@ -169,7 +170,7 @@ void function () {
 
     Function.prototype.compose = function (other) {
 
-        var chain = [ this ].concat(slice.call(arguments));
+        var chain = [ this ].concat(slice(arguments));
 
         return function () { 
 
@@ -177,7 +178,7 @@ void function () {
 
                 return [ curr.apply(null, prev) ];
 
-            }, slice.call(arguments)).pop();
+            }, slice(arguments)).pop();
             
         };
     };
@@ -203,7 +204,7 @@ void function () {
 
         return function () {
 
-            var args = slice.call(arguments), 
+            var args = slice(arguments), 
                 key  = keyGen(args);
 
             return (typeof cache[key] === 'undefined') ? 
@@ -246,7 +247,7 @@ void function () {
     
     Array.smallest = function () {
 
-        var args = slice.call(arguments);
+        var args = slice(arguments);
 
         return args.reduce(function (p, c) {
             return (p.length < c.length) ? p : c;
@@ -256,7 +257,7 @@ void function () {
     
     Array.biggest = function () {
 
-        var args = slice.call(arguments);
+        var args = slice(arguments);
 
         return args.reduce(function (p, c) {
             return (p.length > c.length) ? p : c;
@@ -266,7 +267,7 @@ void function () {
 
     Array.zip = function () {
 
-        var args     = slice.call(arguments),
+        var args     = slice(arguments),
             smallest = Array.smallest.apply(null, args);
 
         return smallest.reduce(function (prev, cur, i) {
@@ -284,7 +285,7 @@ void function () {
     Array.zipWith = function () {
 
         var zipper   = arguments[0];
-            args     = slice.call(arguments, 1),
+            args     = slice(arguments, 1),
             smallest = Array.smallest.apply(null, args);
 
         return smallest.reduce(function (prev, cur, i) {
@@ -393,7 +394,7 @@ void function () {
 
         function correctionFactor() {
 
-            return reduce.call(arguments, function (prev, next) {
+            return reduce(arguments, function (prev, next) {
 
                 var mp = multiplier(prev),
                     mn = multiplier(next);
@@ -413,7 +414,7 @@ void function () {
                 return accum + corrFactor * curr;
             }
 
-            return reduce.call(arguments, cback, 0) / corrFactor;
+            return reduce(arguments, cback, 0) / corrFactor;
         };
 
         Math.sub = function () {
@@ -427,7 +428,7 @@ void function () {
 
             delete arguments[0];
 
-            return reduce.call(arguments, 
+            return reduce(arguments, 
                     cback, first * corrFactor) / corrFactor;
 
         };
@@ -443,7 +444,7 @@ void function () {
                     (corrFactor * corrFactor);
             }
 
-            return reduce.call(arguments, cback, 1);
+            return reduce(arguments, cback, 1);
         };
 
 
@@ -456,7 +457,7 @@ void function () {
                 return (accum * corrFactor) / (curr * corrFactor);
             }
 
-            return reduce.call(arguments, cback);
+            return reduce(arguments, cback);
         };
 
 
@@ -474,7 +475,7 @@ void function () {
         function argv() {
 
             return Array.isArray(arguments[0][0]) === false ?
-                        slice.call(arguments[0]) :
+                        slice(arguments[0]) :
                         arguments[0][0];
         }
 
