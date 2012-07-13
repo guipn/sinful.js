@@ -12,7 +12,8 @@ void function () {
 
     var reduce = Array.prototype.reduce,
         slice  = Array.prototype.slice,
-        own    = Object.getOwnPropertyNames;
+        own    = Object.getOwnPropertyNames,
+        bind   = Function.prototype.bind;
 
 
     String.ASCII = {
@@ -135,6 +136,8 @@ void function () {
     };
 
 
+    // document.
+
     Function.prototype.curry = function (depth) { 
 
         var curry;
@@ -209,7 +212,12 @@ void function () {
         };
     };
 
-    Function.liberate = Function.prototype.bind.call(Function.prototype.bind, Function.prototype.call);
+
+    // document.
+
+    Function.liberate = bind.call(bind, Function.prototype.call);
+
+
 
     Array.range = function (start, end, step) {
 
