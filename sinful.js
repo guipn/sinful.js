@@ -6,9 +6,10 @@
 // gdjs
 ///////
 
-'use strict';
 
 void function () {
+
+    'use strict';
 
     var own      = Object.getOwnPropertyNames,
         bind     = Function.prototype.bind,
