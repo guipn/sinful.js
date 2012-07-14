@@ -11,9 +11,9 @@
 void function () {
 
     var liberate = Function.prototype.bind.call(Function.prototype.bind, Function.prototype.call),
-        reduce = liberate(Array.prototype.reduce),
-        slice  = liberate(Array.prototype.slice),
-        own    = liberate(Object.getOwnPropertyNames);
+        reduce   = liberate(Array.prototype.reduce),
+        slice    = liberate(Array.prototype.slice),
+        own      = liberate(Object.getOwnPropertyNames);
 
 
     String.ASCII = {
@@ -136,7 +136,7 @@ void function () {
     };
 
 
-Function.prototype.curry = function (depth) { 
+    Function.prototype.curry = function (depth) { 
 
         if ( arguments.length > 1 ) {
              throw new Error('Takes a single argument, ' + arguments.length + ' provided.');
