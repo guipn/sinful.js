@@ -209,7 +209,7 @@ Function.prototype.curry = function (depth) {
         };
     };
 
-
+    Function.liberate = Function.prototype.bind.call(Function.prototype.bind, Function.prototype.call);
 
     Array.range = function (start, end, step) {
 

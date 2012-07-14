@@ -1,4 +1,4 @@
-suite('function tests');
+suite('Function.prototype.curry');
 
 var a = require('assert');
 
