@@ -135,25 +135,34 @@ void function () {
     };
 
 
+Function.prototype.curry = function (depth) { 
 
-    Function.prototype.curry = function (depth) {
+        if ( arguments.length > 1 ) {
+             throw new Error('Takes a single argument, ' + arguments.length + ' provided.');
+        }
 
-        var that = this,
-            args = slice.call(arguments, 1),
-            arity = depth == null ? this.length : depth;
-        
-        return function () {
+        var arity = depth == null ?  this.length : depth,
 
-            var allArgs = args.concat(slice.call(arguments));
+            curry = function (arity) {
 
-            return allArgs.length >= arity ? 
-                that.apply(this, allArgs) :
-                that.curry.apply(that, [arity].concat(allArgs));
+            var that = this,
+                args = slice.call(arguments, 1);
+            
+            return function () {
+
+                var allArgs = args.concat(slice.call(arguments));
+
+                return allArgs.length >= arity ? 
+                    that.apply(this, allArgs) :
+                    curry.apply(that, [arity].concat(allArgs));
+
+            };
 
         };
 
-    };
+        return curry.call(this, arity);
 
+    };
 
     Function.prototype.compose = function (other) {
 

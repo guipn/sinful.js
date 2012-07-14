@@ -31,5 +31,12 @@ test('Function.prototype.curry with a depth arg', function(){
         sum5 = sum.curry(5);
 
         a.equal(sum5(1, 2)(3, 4)(5), 15);
+})
+
+test('Function.prototype.curry with too many args', function(){
+
+    var f = function(){};
+
+    a.throws(function(){ f.curry(1, 2, 3) });
 
 })
