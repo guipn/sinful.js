@@ -241,9 +241,7 @@ void function () {
     
     Array.smallest = function () {
 
-        var args = slice(arguments);
-
-        return args.reduce(function (p, c) {
+        return slice(arguments).reduce(function (p, c) {
             return (p.length < c.length) ? p : c;
         });
     };
@@ -251,9 +249,7 @@ void function () {
     
     Array.biggest = function () {
 
-        var args = slice(arguments);
-
-        return args.reduce(function (p, c) {
+        return slice(arguments).reduce(function (p, c) {
             return (p.length > c.length) ? p : c;
         });
     };
