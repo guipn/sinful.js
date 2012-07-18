@@ -13,7 +13,7 @@ void function () {
 
     var own      = Object.getOwnPropertyNames,
         bind     = Function.prototype.bind,
-        liberate = bind.call(bind, Function.prototype.call),
+        liberate = bind.bind(Function.prototype.call),
         reduce   = liberate(Array.prototype.reduce),
         slice    = liberate(Array.prototype.slice);
 
