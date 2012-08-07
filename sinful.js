@@ -12,7 +12,8 @@ void function () {
     'use strict';
 
     var own      = Object.getOwnPropertyNames,
-        liberate = Function.prototype.bind.bind(Function.prototype.call),
+        bind     = Function.prototype.bind,
+        liberate = bind.bind(Function.prototype.call),
         reduce   = liberate(Array.prototype.reduce),
         slice    = liberate(Array.prototype.slice);
 
