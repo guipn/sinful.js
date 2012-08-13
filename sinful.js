@@ -134,14 +134,16 @@ void function () {
     };
 
 
-    // document.
-
     Function.prototype.curry = function (depth) { 
 
         var curry;
 
-        if ( arguments.length > 1 ) {
+        if (arguments.length > 1) {
              throw new Error('One parameter expected, ' + arguments.length + ' received.');
+        }
+
+        if (typeof depth !== 'undefined' && depth < 1) {
+             throw new Error('Invalid depth received (' + depth + ').');
         }
 
         curry = function (arity) {

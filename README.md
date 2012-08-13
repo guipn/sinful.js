@@ -119,6 +119,40 @@ String.ASCII.octDigits; // ↦ '01234567'
 
 ### Function.prototype.curry([depth])
 
+ Returns a [curried] (http://www.haskell.org/haskellwiki/Currying) version of the given function. 
+ Supposing `f` is defined over `n` parameters, `f.curry()` is a function taking 1 parameter and returning a function that is the result of partially applying `f` to the given parameter. This repeats until `n` applications are met (so, for `f.curry()`, `n - 1` more times), at which stage the value and side effects given by a complete application of `f` are reached.
+ It is also possible to partially apply `f` to more than a single argument, and the same is true for all intermediate applications. In code:
+
+<pre>
+function add3(one, two, three) {
+    return one + two + three;
+}
+
+add3.curry()(1)(2)(3); // ↦ 6
+add3.curry()(1)(2, 3); // ↦ 6
+add3.curry()(1, 2)(3); // ↦ 6
+add3.curry()(1, 2, 3); // ↦ 6
+</pre>
+
+ Different semantics must be defined for the following scenario:
+
+<pre>
+function product() {
+    return Array.prototype.slice.call(arguments).reduce(function (p, n) {
+        return p * n;
+    }, 1);
+}
+</pre>
+
+ Since `product` has variable arity, full application could never be reached according to the semantics previously described. 
+ 
+ To remedy this, the optional `depth` parameter can be given, so as to inform `curry` of how many parameters are needed to completely define the computation:
+
+<pre>
+var product3 = product.curry(3);
+
+product3(1)(2)(3); // ↦ 6
+</pre>
 
 
 ### Function.prototype.compose(g)
