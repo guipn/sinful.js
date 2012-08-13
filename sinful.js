@@ -345,8 +345,6 @@ void function () {
 
 
 
-    // document.
-
     Number.prototype.limit = function (lower, upper) {
 
         if (this > upper) {
