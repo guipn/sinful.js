@@ -244,8 +244,6 @@ void function () {
 
                         if (thingOffset === -1) {
                             copy[prop] = clone(thing[prop]);
-                            thingStack.push(thing[prop]);
-                            copyStack.push(copy[prop]);
                         } else {
                             copy[prop] = copyStack[thingOffset];
                         }
