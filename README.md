@@ -85,6 +85,36 @@ String.ASCII.octDigits; // ↦ '01234567'
 
 ## Objects
 
+### Object.prototype.intercept(func)
+
+ It is common practice in JavaScript to chain function calls, taking advantage of the manageable object-oriented syntax the language provides:
+
+<pre>
+var result = obj.foo(...).
+                    bar(...).
+                    baz(...);
+</pre>
+
+ We will call the thing being returned after each of the chain's calls the *ball*.
+
+ This pattern is problematic when, at some point in between two of the chain's calls, some computation must be performed that depends both on the state of the ball and on that of the universe. This becomes worse when that computation is not meant to belong to the finished product - for instance, when debugging. 
+ 
+ The `intercept` function that sinful provides to all objects solves this problem:
+
+<pre>
+var result = obj.foo(...).
+                    bar(...).
+                    intercept(function (ball) {
+                        console.log(ball.someStateHolder);
+                    }).
+                    baz(...);
+</pre>
+
+ It is easy to understand what `intercept` does. It applies the `func` parameter to `this` (the ball), and returns `this` (the ball). It does *not* return the result of applying `func` to the ball. 
+
+ The ball is then delivered to the next function down the chain.
+
+
 ### Object.prototype.deepCopy()
 
  Recursively mirrors this object's own property/values:

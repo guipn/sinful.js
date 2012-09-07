@@ -135,6 +135,11 @@ void function () {
 
 
 
+        [Object.prototype, 'intercept', function (func) {
+            func(this);
+            return this;
+        }],
+
         [Object.prototype, 'mapOwn', function (fun, thisArg) {
             return own(this).map(fun, thisArg);
         }],
