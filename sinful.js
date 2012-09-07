@@ -235,7 +235,7 @@ void function () {
                     var clone = this;
 
                     var properties = Object.getOwnPropertyNames(thing).filter(function(prop){
-                        return propertyFilter.indexOf(properties) === -1;
+                        return propertyFilter.indexOf(prop) === -1;
                     })
 
                     properties.forEach(function(prop) {
