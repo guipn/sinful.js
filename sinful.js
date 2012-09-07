@@ -158,7 +158,7 @@ void function () {
                 "length"
             ];
 
-            // List ofproperties we do not want to copy to cloned arrays
+            // List of properties we do not want to copy to cloned arrays
             var arrayPropertyFilter = [
                 "length"
             ];
@@ -212,7 +212,7 @@ void function () {
             //   Make an empty object that references the original's prototype
             //   properties are filled in later (recursively)
             //
-            // NOTE: This will not properly clone `constructed` functions
+            // NOTE: This will not properly clone `constructed` objects
             // because it is impossible to know what arguments the constructor
             // was originally invoked with
             function cloneObject(object) {
@@ -252,7 +252,7 @@ void function () {
                 };
             }
 
-            // Why make more than one of these since they are all identical
+            // We only need one of these since they are all identical anyway
             var clonePrimitiveFunction = makeCloneFunction(clonePrimitive);
 
             var cloneFunctions = {
