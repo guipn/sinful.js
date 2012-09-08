@@ -148,143 +148,106 @@ void function () {
             return own(this).forEach(fun, thisArg);
         }],
 
-        [Object.prototype, 'deepCopy', (function(){
-            // List of properties we do not want to copy to cloned functions
-            var functionPropertyFilter = [
-                "caller",
-                "name",
-                "arguments",
-                "prototype",
-                "length"
-            ];
+        [Object.prototype, 'deepCopy', (function () {
 
-            // List of properties we do not want to copy to cloned arrays
-            var arrayPropertyFilter = [
-                "length"
-            ];
-
-            // makeCloneFunction -
-            //   Wraps one of the clone* functions below so that we can manage
-            //   all `thingStack` and `copyStack` oeprations in one place
-            function makeCloneFunction(cloneThing) {
-                return function (thing, thingStack, copyStack) {
-                    var copy = cloneThing(thing);
-                    thingStack.push(thing);
-                    copyStack.push(copy);
-                    return copy;
+            var funcBlacklist   = ['caller', 'arguments', 'prototype' ],
+                primitiveCloner = makeCloner(clonePrimitive),
+                cloneFunctions  = {
+                    '[object Null]':      primitiveCloner,
+                    '[object Undefined]': primitiveCloner,
+                    '[object Number]':    primitiveCloner,
+                    '[object String]':    primitiveCloner,
+                    '[object Boolean]':   primitiveCloner,
+                    '[object RegExp]':    makeCloner(cloneRegExp),
+                    '[object Date]':      makeCloner(cloneDate),
+                    '[object Function]':  makeRecCloner(makeCloner(cloneFunction), funcBlacklist),
+                    '[object Object]':    makeRecCloner(makeCloner(cloneObject)),
+                    '[object Array]':     makeRecCloner(makeCloner(cloneArray))
                 };
-            }
 
-            // clonePrimitive -
-            //   Clones booleans, strings, numbers, null and undefined
-            //
-            // NOTE: These values are not references so a `clone` is just the
-            // value itself
             function clonePrimitive(primitive) {
                 return primitive;
             }
 
-            // cloneRegExp -
-            //   Self-Explanatory
             function cloneRegExp(regexp) {
                 return RegExp(regexp);
             }
 
-            // cloneDate -
-            //   Self-Explanatory
             function cloneDate(date) {
                 return new Date(date.getTime());
             }
 
-            // cloneFunction -
-            //   A terrible hack to clone functions
-            // 
-            // NOTE: Since functions are also objects and may contain
-            // properties, we recurse into the function and any properties
-            // are filled in (using makeRecursiveCloneFunction)
             function cloneFunction(fn) {
-                var copy = Function("return " + fn.toString() + ";")();
+
+                var copy = Function('return ' + fn.toString() + ';')();
+
                 copy.prototype = Object.getPrototypeOf(fn);
+
                 return copy;
             }
 
-            // cloneObject -
-            //   Make an empty object that references the original's prototype
-            //   properties are filled in later (recursively)
-            //
-            // NOTE: This will not properly clone `constructed` objects
-            // because it is impossible to know what arguments the constructor
-            // was originally invoked with
+            // This will not properly clone `constructed` objects
+            // because it is impossible to know with what arguments the constructor
+            // was originally invoked.
             function cloneObject(object) {
                 return Object.create(Object.getPrototypeOf(object));
             }
 
-            // cloneArray -
-            //   Just make an empty array. Elements are cloned later.
             function cloneArray(array) {
                 return [];
             }
 
-            // makeRecursiveCloneFunction -
-            //   Generates a function that recursively walks the properties of `thing`
-            //   cloning it first with the function `cloneThing` and filtering 
-            //   any properties by the `propertyFilter`
-            function makeRecursiveCloneFunction(cloneThing, propertyFilter) {
+            function makeCloner(cloneThing) {
+
                 return function (thing, thingStack, copyStack) {
-                    var copy = cloneThing(thing, thingStack, copyStack);
-                    var clone = this;
 
-                    var properties = Object.getOwnPropertyNames(thing).filter(function(prop){
-                        return propertyFilter.indexOf(prop) === -1;
-                    })
+                    var copy = cloneThing(thing);
 
-                    properties.forEach(function(prop) {
-                        var thingOffset = thingStack.indexOf(thing[prop]);
-
-                        if (thingOffset === -1) {
-                            copy[prop] = clone(thing[prop]);
-                        } else {
-                            copy[prop] = copyStack[thingOffset];
-                        }
-                    });
+                    thingStack.push(thing);
+                    copyStack.push(copy);
 
                     return copy;
                 };
             }
 
-            // We only need one of these since they are all identical anyway
-            var clonePrimitiveFunction = makeCloneFunction(clonePrimitive);
+            function makeRecCloner(cloneThing, blacklist) {
 
-            var cloneFunctions = {
-                "[object Null]": clonePrimitiveFunction,
-                "[object Undefined]": clonePrimitiveFunction,
-                "[object Number]": clonePrimitiveFunction,
-                "[object String]": clonePrimitiveFunction,
-                "[object Boolean]": clonePrimitiveFunction,
-                "[object RegExp]": makeCloneFunction(cloneRegExp),
-                "[object Date]": makeCloneFunction(cloneDate),
-                "[object Function]": makeRecursiveCloneFunction(makeCloneFunction(cloneFunction), functionPropertyFilter),
-                "[object Object]": makeRecursiveCloneFunction(makeCloneFunction(cloneObject), []),
-                "[object Array]": makeRecursiveCloneFunction(makeCloneFunction(cloneArray), arrayPropertyFilter)
-            };
+                return function (thing, thingStack, copyStack) {
 
-            return function _deepCopy() {
+                    var clone = this;
+
+                    return own(thing).
+                        filter(function (prop) { 
+                            return !blacklist || blacklist.indexOf(prop) === -1;
+                        }).
+                        reduce(function (copy, prop) {
+
+                            var thingOffset = thingStack.indexOf(thing[prop]);
+
+                            copy[prop] = (thingOffset === -1) ?
+                                            clone(thing[prop]) :
+                                            copyStack[thingOffset];
+
+                            return copy;
+
+                        }, cloneThing(thing, thingStack, copyStack));
+                };
+            }
+
+            return function () {
 
                 var thingStack = [],
-                    copyStack = [];
+                    copyStack  = [];
 
                 function clone(thing){
-                    // This is the most certain way to get an object's type
-                    var typeOfThing = Object.prototype.toString.call(thing);
+                    
+                    var type = Object.prototype.toString.call(thing);
 
-                    // We have to call this function with `clone` because we
-                    // use the `this` value to recursively clone objects
-                    return cloneFunctions[typeOfThing].call(clone, thing, thingStack, copyStack);
+                    return cloneFunctions[type].call(clone, thing, thingStack, copyStack);
                 }
 
                 return clone(this);
             };
-
         })()],
 
 
