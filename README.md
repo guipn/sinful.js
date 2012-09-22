@@ -19,7 +19,7 @@ JavaScript's motherland is permanently dynamic and often dangerous, and yes, we 
 ## Use
 
 By default, sinful.js takes an "all or nothing" approach to extending prototypes: if some property it attempts to provide has already been defined, an error occurs and augmenting stops. If this is not desirable, you may provide your own augmenting routine, which sinful.js will then use instead of the more strict, standard version. 
-In that case, your function should be supplied as the sole argument to the outer function in sinful.js' [code](https://github.com/guipn/sinful.js/blob/master/sinful.js).
+In that case, your function should be supplied as the sole argument to the outer function in sinful.js' [code](https://github.com/guipn/sinful.js/blob/master/sinful.js#L568).
 
 
 ## Strings
