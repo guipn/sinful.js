@@ -16,6 +16,11 @@ While `$_lib_mess.String.echo('bar', 3);` is safe(r) and not aesthetically terri
 JavaScript's motherland is permanently dynamic and often dangerous, and yes, we should strive to remain sane. I trust that users of this library know what code they're running and when. Nevertheless, I'm considering adding an all-or-nothing principle of no contention.
 
 
+## Use
+
+By default, sinful.js takes an "all or nothing" approach to extending prototypes: if some property it attempts to provide has already been defined, an error occurs and augmenting stops. If this is not desirable, you may provide your own augmenting routine, which sinful.js will then use instead of the more strict, standard version. 
+In that case, your function should be supplied as the sole argument to the outer function in sinful.js' [code](https://github.com/guipn/sinful.js/blob/master/sinful.js).
+
 
 ## Strings
 
