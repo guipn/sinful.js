@@ -145,11 +145,13 @@ foo(obj.boo.bar.baz); // undefined makes no sense for foo.
  The solution here would be to employ a series of checks on every property access. This is ugly and not always useful. `Object.prototype.maybe` solves this problem neatly:
 
 <pre>
-foo(obj.maybe(['boo', 'bar', 'baz'], 'pidgeon'));
+foo(obj.maybe('boo.bar.baz', 'pidgeon'));
 </pre>
 
  Above, if `obj.boo`, `obj.boo.bar` or `obj.boo.bar.baz` are `undefined`, `foo` receives `'pidgeon'`.
  Not providing the second argument would cause that to yield `undefined`, though there would be no danger of producing runtime errors.
+
+ An array of strings, each representing the property to be evaluated at each step, may also be provided -- example: `obj.maybe(['boo', 'bar', 'baz'], 'pidgeon')'.
 
 
 ### Object.prototype.deepCopy()

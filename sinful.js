@@ -142,7 +142,9 @@ void function () {
 
         [Object.prototype, 'maybe', function (propertyPath, otherwise) {
 
-            return propertyPath.reduce(function (current, next) {
+            return (Array.isArray(propertyPath) ? 
+                        propertyPath :
+                        propertyPath.split(/\./)).reduce(function (current, next) {
                 
                 return typeof current[next] === 'undefined' ? 
                                 otherwise :
