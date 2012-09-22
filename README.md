@@ -115,6 +115,43 @@ var result = obj.foo(...).
  The ball is then delivered to the next function down the chain.
 
 
+### Object.prototype.maybe(propertyPath, otherwise)
+
+ It is often necessary to prevent from using `undefined` when procuring the value of some object's property:
+
+<pre>
+// Obtain obj in some way
+
+foo(obj.prop); // undefined makes no sense for foo.
+</pre>
+
+ The solution is trivial (if statements, the ternary operator or ||). However, the problem is more annoying as structures become larger:
+
+<pre>
+var obj = {
+    boo: {
+        bar: {
+            baz: 10
+        }
+    }
+};
+
+foo(obj.boo.bar.baz); // undefined makes no sense for foo.
+                      // Additionally, if obj.boo or obj.boo.bar
+                      // are undefined, this is an error.
+
+</pre>
+
+ The solution here would be to employ a series of checks on every property access. This is ugly and not always useful. `Object.prototype.maybe` solves this problem neatly:
+
+<pre>
+foo(obj.maybe(['boo', 'bar', 'baz'], 'pidgeon'));
+</pre>
+
+ Above, if `obj.boo`, `obj.boo.bar` or `obj.boo.bar.baz` are `undefined`, `foo` receives `'pidgeon'`.
+ Not providing the second argument would cause that to yield `undefined`, though there would be no danger of producing runtime errors.
+
+
 ### Object.prototype.deepCopy()
 
  Recursively mirrors this object's own property/values:

@@ -29,5 +29,17 @@
     console.log(Math.sub(0.3, 0.2));
     console.log(Math.mul(0.2, 0.1));
     console.log(Math.div(0.3, 0.1));
+
+    var multiLevel = {
+        foo: {
+            bar: {
+                baz: 10
+            }
+        }
+    };
+
+    console.log(multiLevel.maybe(['foo', 'bar', 'baz'], "I don't know."));
+    console.log(multiLevel.maybe(['foo', 'bar', 'moo'], "I don't know."));
+    console.log(multiLevel.maybe(['foo', 'bar', 'moo', 'whatever'], "I don't know."));
     
 </script>

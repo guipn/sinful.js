@@ -140,6 +140,16 @@ void function () {
             return this;
         }],
 
+        [Object.prototype, 'maybe', function (propertyPath, otherwise) {
+
+            return propertyPath.reduce(function (current, next) {
+                
+                return typeof current[next] === 'undefined' ? 
+                                otherwise :
+                                current[next];
+            }, this);
+        }],
+
         [Object.prototype, 'mapOwn', function (fun, thisArg) {
             return own(this).map(fun, thisArg);
         }],
