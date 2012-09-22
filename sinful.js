@@ -7,7 +7,7 @@
 ///////
 
 
-void function () {
+void function (bless) {
 
     'use strict';
 
@@ -18,16 +18,14 @@ void function () {
         slice    = liberate(Array.prototype.slice);
 
 
-    // All-or-nothing.
-
-    function bless(thing, name, content) {
+    bless = bless || function (thing, name, content) {
         
         if (typeof thing[name] !== 'undefined') {
             throw new Error('Sinful: ' + name + ' is already defined.');
         }
 
         thing[name] = content;
-    }
+    };
 
 
     // Other helpers
