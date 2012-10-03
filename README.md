@@ -22,6 +22,19 @@ By default, sinful.js takes an "all or nothing" approach to extending prototypes
 In that case, your function should be supplied as the sole argument to the outer function in sinful.js' [code](https://github.com/guipn/sinful.js/blob/master/sinful.js#L568).
 
 
+## Contributors
+
+ I've had invaluable help from the following people, either directly with code or indirectly with useful criticism.
+
++ [FireFly (Jonas Höglund)] (https://github.com/FireyFly) 
++ [Mortchek (Danny Cook)](https://github.com/mortchek)
++ [cmr (Corey Richardson)] (https://github.com/cmr)
++ [hughfdjackson (Hugh Jackson)] (https://github.com/hughfdjackson)
++ [imbcmdth (Jon Rivera)] (https://github.com/imbcmdth)
++ [rmurphey (Rebecca Murphey)] (https://github.com/rmurphey)
+
+
+
 ## Strings
 
 ### String.ASCII
