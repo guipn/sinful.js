@@ -318,6 +318,14 @@ void function (bless) {
             };
         }],
 
+        [Function.prototype, 'reducify', function(){
+            var fn = this;
+
+            return function(){ 
+                return slice(arguments).reduce(fn);
+            }
+        }],
+
         [Function, 'memoize', function (func, keyGen) {
 
             var cache = {};
@@ -338,8 +346,6 @@ void function (bless) {
         }],
 
         [Function, 'liberate', liberate],
-
-
 
         [Array, 'range', function (start, end, step) {
 
