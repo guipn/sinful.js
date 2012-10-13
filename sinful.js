@@ -318,10 +318,11 @@ void function (bless) {
             };
         }],
 
-        [Function.prototype, 'reducify', function(){
+        [Function.prototype, 'reducify', function () {
+
             var fn = this;
 
-            return function(){ 
+            return function () { 
                 return slice(arguments).reduce(fn);
             }
         }],
