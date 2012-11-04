@@ -4,18 +4,18 @@ var a = require('assert');
 
 require('../sinful');
 
-test('Function.prototype.reducify on add', function(){
+test('Function.prototype.reducerify on add', function(){
     
     var add = function(a, b){ return a + b },
-        sum = add.reducify();
+        sum = add.reducerify();
 
     a.equal(sum(1, 2, 3, 4), 10);
 });
 
-test('Function.prototype.reducify on add with initial value', function(){
+test('Function.prototype.reducerify on add with initial value', function(){
     
     var add = function(a, b){ return a + b },
-        sum = add.reducify(0);
+        sum = add.reducerify(0);
 
     a.equal(sum(1, 2, 3, 4), 10);
     a.equal(sum(), 0);
