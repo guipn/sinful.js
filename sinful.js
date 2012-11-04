@@ -318,7 +318,7 @@ void function (bless) {
             };
         }],
 
-        [Function.prototype, 'reducify', function(){
+        [Function.prototype, 'reducerify', function(){
             var fn = this;
 
             return function(){ 

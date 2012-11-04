@@ -14,7 +14,7 @@ test('on an identity function', function(){
 
 test('symetry with liberate', function(){
     
-    var sum  = function(a, b){ return a + b; }.reducify(),
+    var sum  = function(a, b){ return a + b; }.reducerify(),
         sum2 = Function.liberate(Function.enslave(sum)); 
 
     a.equal(sum(1, 2, 3), sum2(1, 2, 3));
