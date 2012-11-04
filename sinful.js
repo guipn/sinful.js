@@ -318,6 +318,15 @@ void function (bless) {
             };
         }],
 
+        [Function.prototype, 'then', function(func) {
+
+            var that = this;
+
+            return function() {
+                return func(that.apply(null, arguments));
+            };
+        }],
+        
         [Function.prototype, 'reducify', function () {
 
             var fn = this;
@@ -355,6 +364,8 @@ void function (bless) {
             };
         
         }],
+
+
 
         [Array, 'range', function (start, end, step) {
 
