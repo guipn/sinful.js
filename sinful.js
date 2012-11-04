@@ -327,13 +327,17 @@ void function (bless) {
             };
         }],
         
-        [Function.prototype, 'reducify', function () {
+        [Function.prototype, 'reducify', function (initialValue) {
 
             var fn = this;
 
-            return function () { 
-                return slice(arguments).reduce(fn);
-            }
+            return arguments.length ?
+                function () {
+                    return slice(arguments).reduce(fn, initialValue);
+                } :
+                function () { 
+                    return slice(arguments).reduce(fn);
+                };
         }],
 
         [Function, 'memoize', function (func, keyGen) {
