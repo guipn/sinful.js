@@ -1,10 +1,10 @@
 // sinful.js
 // ----------
 //
-// For the rationale, refer to http://github.com/guipn/sinful.js
+// For the rationale and documentation,
+// refer to http://github.com/guipn/sinful.js
 //
-// gdjs
-///////
+/////
 
 
 void function (bless) {
@@ -77,18 +77,7 @@ void function (bless) {
     // Begin augmenting
 
     [
-        [String, 'ASCII', {
-
-            lowercase: 'abcdefghijklmnopqrstuvwxyz',
-            uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            letters:   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            digits:    '0123456789',
-            hexDigits: '0123456789abcdefABCDEF',
-            octDigits: '01234567'
-
-        }],
-
-        // Remembered where I saw this: Crockford's The Good Parts 
+        // String interpolation function proposed in Crockford's The Good Parts 
 
         [String.prototype, 'interp', function (expansions) {
 
@@ -102,10 +91,6 @@ void function (bless) {
 
         [String.prototype, 'reverse', function () {
             return this.split('').reverse().join('');
-        }],
-
-        [String.prototype, 'words', function () {
-            return this.split(/\s+/);
         }],
 
         [String.prototype, 'repeat', function (times, sep) {
@@ -394,14 +379,14 @@ void function (bless) {
                     Array.range(start, end, (end - start) / count);
         }],
 
-        [Array, 'smallest', function () {
+        [Array, 'shortest', function () {
 
             return slice(arguments).reduce(function (p, c) {
                 return (p.length < c.length) ? p : c;
             });
         }],
 
-        [Array, 'biggest', function () {
+        [Array, 'longest', function () {
 
             return slice(arguments).reduce(function (p, c) {
                 return (p.length > c.length) ? p : c;
@@ -411,9 +396,9 @@ void function (bless) {
         [Array, 'zip', function () {
 
             var args     = slice(arguments),
-                smallest = Array.smallest.apply(null, args);
+                shortest = Array.shortest.apply(null, args);
 
-            return smallest.reduce(function (prev, cur, i) {
+            return shortest.reduce(function (prev, cur, i) {
 
                 prev.push(args.map(function (array) {
                     return array[i];
@@ -428,9 +413,9 @@ void function (bless) {
 
             var zipper   = arguments[0];
                 args     = slice(arguments, 1),
-                smallest = Array.smallest.apply(null, args);
+                shortest = Array.shortest.apply(null, args);
 
-            return smallest.reduce(function (prev, cur, i) {
+            return shortest.reduce(function (prev, cur, i) {
 
                 prev.push(zipper.apply(null, args.map(function (array) {
                     return array[i];
@@ -555,42 +540,6 @@ void function (bless) {
             return reduce(arguments, cback);
         }],
 
-        [Math, 'intDiv', function (left, right) {
-
-            var div   = Math.div(left, right),
-                parts = div.toString().split('.');
-
-            return (parts.length) ?
-                (new Number(parts[0])).valueOf() :
-                div;
-        }],
-
-
-        [Math, 'arithmeticMean', function () {
-
-            var numbers = argv(arguments);
-
-            if (arguments.length === 0) {
-                return undefined;
-            }
-
-            return numbers.reduce(function (sum, curr) {
-                return sum + curr;
-            }, 0) / numbers.length;
-        }],
-
-        [Math, 'geometricMean', function () {
-
-            var numbers = argv(arguments);
-
-            if (arguments.length === 0) {
-                return undefined;
-            }
-
-            return Math.sqrt(numbers.reduce(function (product, curr) {
-                return product * curr;
-            }, 1));
-        }]
 
     ].forEach(function (blessing) {
         bless(blessing.shift(), blessing.shift(), blessing.shift());
