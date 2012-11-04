@@ -312,7 +312,7 @@ void function (bless) {
             };
         }],
         
-        [Function.prototype, 'reducify', function (initialValue) {
+        [Function.prototype, 'reducerify', function (initialValue) {
 
             var fn = this;
 
