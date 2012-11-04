@@ -348,6 +348,14 @@ void function (bless) {
 
         [Function, 'liberate', liberate],
 
+        [Function, 'enslave', function(fn){
+            
+            return function(){
+                return fn.bind(null, this).apply(null, arguments);
+            };
+        
+        }],
+
         [Array, 'range', function (start, end, step) {
 
             var result = [], i = start;
