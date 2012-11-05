@@ -426,10 +426,6 @@ void function (bless) {
 
         }],
 
-        [Array.prototype, 'clone', function () {
-            return this.slice();
-        }],
-
         [Array.prototype, 'unique', function (search) {
 
             search = search || this.indexOf;
