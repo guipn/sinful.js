@@ -1,8 +1,8 @@
 suite('Function.prototype.curry');
+require('../sinful');
 
 var a = require('assert');
 
-require('../sinful');
 
 test('Function.prototype.curry with no args', function(){
 

@@ -1,6 +1,8 @@
 suite('Function.prototype.liberate');
+require('../sinful');
 
 var a = require('assert');
+
 
 test('Function.prototype.liberate on [].slice', function(){
     

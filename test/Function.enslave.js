@@ -1,6 +1,8 @@
 suite('Function.enslave');
+require('../sinful');
 
 var a = require('assert');
+
 
 test('on an identity function', function(){
     
