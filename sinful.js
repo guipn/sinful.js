@@ -483,6 +483,12 @@ void function (bless) {
             return this.valueOf();
         }],
 
+        [Number.prototype, 'times', function (fun) {
+            for (var i = 0; i < this; i++) {
+                fun(i);
+            }
+        }],
+
 
 
         [Math, 'add', function () {
