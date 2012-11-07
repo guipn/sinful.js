@@ -478,8 +478,8 @@ void function (bless) {
                                               function (x) { return x >= limit; };
 
             while (continuePred(i)) {
-                i = stepper(i);
                 list.push(i);
+                i = stepper(i);
             }
 
             return list;
