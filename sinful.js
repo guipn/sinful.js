@@ -469,21 +469,17 @@ void function (bless) {
         [Number.prototype, 'to', function (limit, stepper) {
 
             var list = [],
-                i    = this.valueOf();
+                i    = this.valueOf(),
+                continuePred;
             
             stepper = stepper || function (x) { return x + 1; };
 
-            if (stepper(i) > i) {
-                while (i <= limit) {
-                    i = stepper(i);
-                    list.push(i);
-                }
-            }
-            else {
-                while (i >= limit) {
-                    i = stepper(i);
-                    list.push(i);
-                }
+            continuePred = (stepper(i) > i) ? function (x) { return x <= limit; } :
+                                              function (x) { return x >= limit; };
+
+            while (continuePred(i)) {
+                i = stepper(i);
+                list.push(i);
             }
 
             return list;
