@@ -356,29 +356,6 @@ void function (bless) {
 
 
 
-        [Array, 'range', function (start, end, step) {
-
-            var result = [], i = start;
-
-            if (step == 0) {
-                throw new Error('Step size must not evaluate to 0.');
-            }
-
-            while (i <= end) {
-                result.push(i);
-                i += step;
-            }
-
-            return result;
-        }],
-
-        [Array, 'discretize', function (start, end, count) {
-
-            return (count == 0) ?
-                    [] : 
-                    Array.range(start, end, (end - start) / count);
-        }],
-
         [Array, 'shortest', function () {
 
             return slice(arguments).reduce(function (p, c) {
@@ -487,6 +464,29 @@ void function (bless) {
             for (var i = 0; i < this; i++) {
                 fun(i);
             }
+        }],
+
+        [Number.prototype, 'to', function (limit, stepper) {
+
+            var list = [],
+                i    = this.valueOf();
+            
+            stepper = stepper || function (x) { return x + 1; };
+
+            if (stepper(i) > i) {
+                while (i <= limit) {
+                    i = stepper(i);
+                    list.push(i);
+                }
+            }
+            else {
+                while (i >= limit) {
+                    i = stepper(i);
+                    list.push(i);
+                }
+            }
+
+            return list;
         }],
 
 
