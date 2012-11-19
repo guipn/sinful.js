@@ -339,14 +339,14 @@ void function (bless) {
                     key  = keyGen(args);
 
                 return (typeof cache[key] === 'undefined') ? 
-                    cache[key] = func(args) :
+                    cache[key] = func.apply(null, args) :
                     cache[key];
             };
         }],
 
         [Function, 'liberate', liberate],
 
-        [Function, 'enslave', function(fn){
+        [Function, 'enslave', function (fn) {
             
             return function(){
                 return fn.bind(null, this).apply(null, arguments);
