@@ -354,6 +354,20 @@ void function (bless) {
         
         }],
 
+        [Function, 'bundle', function () {
+
+            var funcs = slice(arguments);
+
+            return function () {
+                var args = arguments;
+
+                return funcs.map(function (func) {
+                    return func.apply(this, args)
+                }.bind(this));
+            };
+
+        }],
+
 
 
         [Array, 'shortest', function () {
