@@ -475,9 +475,13 @@ void function (bless) {
         }],
 
         [Number.prototype, 'times', function (fun) {
+            var result = [];
+
             for (var i = 0; i < this; i++) {
-                fun(i);
+                result.push(fun(i));
             }
+
+            return result;
         }],
 
         [Number.prototype, 'to', function (limit, stepper) {
