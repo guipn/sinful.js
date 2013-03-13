@@ -402,7 +402,7 @@ void function (bless) {
 
         [Array, 'zipWith', function () {
 
-            var zipper   = arguments[0];
+            var zipper   = arguments[0],
                 args     = slice(arguments, 1),
                 shortest = Array.shortest.apply(null, args);
 
@@ -560,4 +560,4 @@ void function (bless) {
     ].forEach(function (blessing) {
         bless(blessing.shift(), blessing.shift(), blessing.shift());
     });
-}( /* Provide your own 'bless' to be used as above if custom behavior needed. */);
+}(/* Provide your own 'bless' to be used as above if custom behavior needed. */);
