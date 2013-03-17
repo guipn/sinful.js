@@ -4,7 +4,7 @@
 // For the rationale and documentation,
 // refer to http://github.com/guipn/sinful.js
 //
-/////
+///////////////////////////////////////////////
 
 
 void function (bless) {
@@ -26,16 +26,6 @@ void function (bless) {
 
         thing[name] = content;
     };
-
-
-    // Other helpers
-
-    function argv() {
-
-        return Array.isArray(arguments[0][0]) === false ?
-                    slice(arguments[0]) :
-                    arguments[0][0];
-    }
 
 
     // Fixing Floating-point math
