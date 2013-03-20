@@ -390,11 +390,44 @@ void function (bless) {
             }, []);
         }],
 
+        [Array, 'greedyZip', function () {
+
+            var args     = slice(arguments),
+                shortest = Array.longest.apply(null, args);
+
+            return shortest.reduce(function (prev, cur, i) {
+
+                prev.push(args.map(function (array) {
+                    return array[i];
+                }));
+
+                return prev;
+
+            }, []);
+        }],
+
         [Array, 'zipWith', function () {
 
             var zipper   = arguments[0],
                 args     = slice(arguments, 1),
                 shortest = Array.shortest.apply(null, args);
+
+            return shortest.reduce(function (prev, cur, i) {
+
+                prev.push(zipper.apply(null, args.map(function (array) {
+                    return array[i];
+                })));
+
+                return prev;
+            }, []);
+
+        }],
+
+        [Array, 'greedyZipWith', function () {
+
+            var zipper   = arguments[0],
+                args     = slice(arguments, 1),
+                shortest = Array.longest.apply(null, args);
 
             return shortest.reduce(function (prev, cur, i) {
 
