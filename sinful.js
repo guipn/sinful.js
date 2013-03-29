@@ -392,10 +392,10 @@ void function (bless) {
 
         [Array, 'greedyZip', function () {
 
-            var args     = slice(arguments),
-                shortest = Array.longest.apply(null, args);
+            var args    = slice(arguments),
+                longest = Array.longest.apply(null, args);
 
-            return shortest.reduce(function (prev, cur, i) {
+            return longest.reduce(function (prev, cur, i) {
 
                 prev.push(args.map(function (array) {
                     return array[i];
@@ -425,11 +425,11 @@ void function (bless) {
 
         [Array, 'greedyZipWith', function () {
 
-            var zipper   = arguments[0],
-                args     = slice(arguments, 1),
-                shortest = Array.longest.apply(null, args);
+            var zipper  = arguments[0],
+                args    = slice(arguments, 1),
+                longest = Array.longest.apply(null, args);
 
-            return shortest.reduce(function (prev, cur, i) {
+            return longest.reduce(function (prev, cur, i) {
 
                 prev.push(zipper.apply(null, args.map(function (array) {
                     return array[i];
