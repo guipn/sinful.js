@@ -535,7 +535,7 @@ void function (bless) {
         }],
 
         [Number.prototype, 'toInt', function() {
-            return this.valueOf() | 0;
+            return this.valueOf() - (this.valueOf() % 1)
         }],
 
 
