@@ -525,6 +525,18 @@ void function (bless) {
 
             return list;
         }],
+        
+        [Number.prototype, 'toDeg', function() {
+            return this.valueOf() * Math.PI / 180;
+        }],
+
+        [Number.prototype, 'toRad', function() {
+            return this.valueOf() * 180 / Math.PI;
+        }],
+
+        [Number.prototype, 'toInt', function() {
+            return this.valueOf() - (this.valueOf() % 1)
+        }],
 
 
 
