@@ -360,6 +360,39 @@ void function (bless) {
 
 
 
+        // Array multi - sorter utility
+        // returns a sorter that can (sub-)sort by multiple (nested) fields 
+        // each ascending or descending independantly
+        // https://github.com/foo123/sinful.js
+        [Array, 'sorter', function () {
+
+            var arr = this, i, args = arguments, l = args.length,
+                a, b, step, lt, gt,
+                field, desc, sorter;
+            if ( l )
+            {
+                step = 1;
+                sorter = [];
+                for (i=l-1; i>=0; i--)
+                {
+                    field = args[i][0];
+                    field = '["' + field.split('.').join('"]["') + '"]';
+                    a = "a"+field; b = "b"+field;
+                    desc = args[i].length > 1 ? 0 > args[i][1] : false;
+                    lt = desc ? ''+step : '-'+step; gt = desc ? '-'+step : ''+step;
+                    sorter.unshift("("+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0))");
+                    step <<= 1;
+                }
+                sorter = sorter.join(' + ');
+            }
+            else
+            {
+                a = "a"; b = "b"; lt = '-1'; gt = '1';
+                sorter = ""+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0)";
+            }
+            return new Function("a,b", 'return ('+sorter+');');
+        }],
+
         [Array, 'shortest', function () {
 
             return slice(arguments).reduce(function (p, c) {
