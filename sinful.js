@@ -473,6 +473,24 @@ void function (bless) {
 
         }],
 
+        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        // Array unbiased shuffling
+        // using Fisher-Yates-Knuth shuffle algorithm
+        // https://github.com/foo123/sinful.js
+        [Array.prototype, 'shuffle', function () {
+            var N, perm, swap, arr = this;
+            N = arr.length;
+            while ( N-- )
+            { 
+                perm = Math.round(N*Math.random()); 
+                swap = arr[ N ]; 
+                arr[ N ] = arr[ perm ]; 
+                arr[ perm ] = swap; 
+            }
+            // in-place
+            return arr;
+        }],
+        
         [Array.prototype, 'unique', function (search) {
 
             search = search || this.indexOf;
