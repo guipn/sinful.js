@@ -360,6 +360,59 @@ void function (bless) {
 
 
 
+        // Array multi - sorter utility
+        // returns a sorter that can (sub-)sort by multiple (nested) fields 
+        // each ascending or descending independantly
+        // https://github.com/foo123/sinful.js
+        [Array, 'sorter', function () {
+
+            var arr = this, i, args = arguments, l = args.length,
+                a, b, step, lt, gt,
+                field, desc, dir, sorter,
+                ASC = '|^', DESC = '|v';
+            // |^ after a (nested) field indicates ascending sorting (default), 
+            // example "a.b.c|^"
+            // |v after a (nested) field indicates descending sorting, 
+            // example "b.c.d|v"
+            if ( l )
+            {
+                step = 1;
+                sorter = [];
+                for (i=l-1; i>=0; i--)
+                {
+                    field = args[i];
+                    dir = field.slice(-2);
+                    if ( DESC === dir ) 
+                    {
+                        desc = true;
+                        field = field.slice(0,-2);
+                    }
+                    else if ( ASC === dir )
+                    {
+                        desc = false;
+                        field = field.slice(0,-2);
+                    }
+                    else
+                    {
+                        // default ASC
+                        desc = false;
+                    }
+                    field = field.length ? '["' + field.split('.').join('"]["') + '"]' : '';
+                    a = "a"+field; b = "b"+field;
+                    lt = desc ?(''+step):('-'+step); gt = desc ?('-'+step):(''+step);
+                    sorter.unshift("("+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0))");
+                    step <<= 1;
+                }
+                sorter = sorter.join(' + ');
+            }
+            else
+            {
+                a = "a"; b = "b"; lt = '-1'; gt = '1';
+                sorter = ""+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0)";
+            }
+            return new Function("a,b", 'return ('+sorter+');');
+        }],
+
         [Array, 'shortest', function () {
 
             return slice(arguments).reduce(function (p, c) {
@@ -440,6 +493,42 @@ void function (bless) {
 
         }],
 
+        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        // Array unbiased shuffling
+        // using Fisher-Yates-Knuth shuffle algorithm
+        // https://github.com/foo123/sinful.js
+        [Array.prototype, 'shuffle', function () {
+            var N, perm, swap, arr = this;
+            N = arr.length;
+            while ( N-- )
+            { 
+                perm = Math.round(N*Math.random()); 
+                swap = arr[ N ]; 
+                arr[ N ] = arr[ perm ]; 
+                arr[ perm ] = swap; 
+            }
+            // in-place
+            return arr;
+        }],
+        
+        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        // Array unbiased partial shuffling, indicated by included indices
+        // using variation of Fisher-Yates-Knuth shuffle algorithm
+        // https://github.com/foo123/sinful.js
+        [Array.prototype, 'shuffle_only', function (included_indices) {
+            var N, perm, swap, arr = this;
+            N = included_indices.length;
+            while ( N-- )
+            { 
+                perm = Math.round(N*Math.random()); 
+                swap = arr[ included_indices[N] ]; 
+                arr[ included_indices[N] ] = arr[ included_indices[perm] ]; 
+                arr[ included_indices[perm] ] = swap; 
+            }
+            // in-place
+            return arr;
+        }],
+        
         [Array.prototype, 'unique', function (search) {
 
             search = search || this.indexOf;
