@@ -368,7 +368,7 @@ void function (bless) {
 
             var arr = this, i, args = arguments, l = args.length,
                 a, b, step, lt, gt,
-                field, desc, dir, sorter,
+                field, filter_args, sorter_args, desc, dir, sorter,
                 ASC = '|^', DESC = '|v';
             // |^ after a (nested) field indicates ascending sorting (default), 
             // example "a.b.c|^"
@@ -378,9 +378,22 @@ void function (bless) {
             {
                 step = 1;
                 sorter = [];
+                sorter_args = [];
+                filter_args = []; 
                 for (i=l-1; i>=0; i--)
                 {
                     field = args[i];
+                    // if is array, it contains a filter function as well
+                    filter_args.unshift('f'+i);
+                    if ( field.push )
+                    {
+                        sorter_args.unshift(field[1]);
+                        field = field[0];
+                    }
+                    else
+                    {
+                        sorter_args.unshift(null);
+                    }
                     dir = field.slice(-2);
                     if ( DESC === dir ) 
                     {
@@ -399,18 +412,28 @@ void function (bless) {
                     }
                     field = field.length ? '["' + field.split('.').join('"]["') + '"]' : '';
                     a = "a"+field; b = "b"+field;
+                    if ( sorter_args[0] ) 
+                    {
+                        a = filter_args[0] + '(' + a + ')';
+                        b = filter_args[0] + '(' + b + ')';
+                    }
                     lt = desc ?(''+step):('-'+step); gt = desc ?('-'+step):(''+step);
                     sorter.unshift("("+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0))");
                     step <<= 1;
                 }
-                sorter = sorter.join(' + ');
+                // use optional custom filters as well
+                return (new Function(
+                        filter_args.join(','), 
+                        'return function(a,b) { return ('+sorter.join(' + ')+'); };'
+                        ))
+                        .apply(null, sorter_args);
             }
             else
             {
                 a = "a"; b = "b"; lt = '-1'; gt = '1';
                 sorter = ""+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0)";
+                return new Function("a,b", 'return ('+sorter+');');
             }
-            return new Function("a,b", 'return ('+sorter+');');
         }],
 
         [Array, 'shortest', function () {
