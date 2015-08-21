@@ -67,6 +67,48 @@ void function (bless) {
     // Begin augmenting
 
     [
+        // Efficient String interpolation / templating
+        // https://github.com/foo123/sinful.js
+        [String, 'template', function (tpl, re_keys) {
+            // default key format is $(key)
+            if ( 2 > arguments.length ) re_keys = /\$\(([^()]*)\)/g;
+            re_keys = re_keys.global ? re_keys : new RegExp(re_keys.source, re_keys.ignoreCase?"gi":"g"); /* make sure global flag is added */
+            var a = [ ], i = 0, m, stpl;
+            while ( m = re_keys.exec( tpl ) )
+            {
+                a.push([1, tpl.slice(i, re_keys.lastIndex - m[0].length)]);
+                a.push([0, m[1] ? m[1] : m[0]]);
+                i = re_keys.lastIndex;
+            }
+            a.push([1, tpl.slice(i)]);
+            stpl = new String(tpl);
+            stpl.tpl = a;
+            return stpl;
+        }],
+
+        // Efficient String interpolation / templating
+        // https://github.com/foo123/sinful.js
+        [String.prototype, 'render', function (args) {
+            var str = this, tpl = str.tpl, l, 
+                argslen, i, notIsSub, s, out
+            ;
+            if ( tpl )
+            {
+                argslen = args.length;
+                out = '';
+                for (i=0,l=tpl.length; i<l; i++)
+                {
+                    notIsSub = tpl[ i ][ 0 ]; s = tpl[ i ][ 1 ];
+                    out += (notIsSub ? s : (!s.substr && s < 0 ? args[ argslen+s ] : args[ s ]));
+                }
+            }
+            else
+            {
+                out = str;
+            }
+            return out;
+        }],
+
         // String interpolation function proposed in Crockford's The Good Parts 
 
         [String.prototype, 'interp', function (expansions) {
@@ -436,6 +478,101 @@ void function (bless) {
             }
         }],
 
+        // Array UNION of 2 arrays
+        // returns array with unique values of both arrays
+        // https://github.com/foo123/sinful.js
+        [Array, 'union', function (a, b) {
+            
+            var ai = 0, bi = 0, union = [ ], last,
+                al = a.length, bl = b.length;
+            // assume a, b lists are sorted ascending, even with duplicate values
+            while( ai < al && bi < bl )
+            {
+                if      (union.length) // handle any possible duplicates inside SAME list
+                {
+                    if ( a[ai] === last )
+                    {
+                        ai++; continue;
+                    }
+                    else if ( b[bi] === last )
+                    {
+                        bi++; continue;
+                    }
+                }
+                if      ( a[ai] < b[bi] )
+                { 
+                    union.push( last=a[ai++] ); 
+                }
+                else if ( a[ai] > b[bi] )
+                { 
+                    union.push( last=b[bi++] ); 
+                }
+                else // they're equal, push one unique
+                {
+                    union.push( last=a[ ai ] );
+                    ai++; bi++;
+                }
+            }
+            while ( ai < al ) if (a[ai++] !== last) union.push( last=a[ai-1] ); 
+            while ( bi < bl ) if (b[bi++] !== last) union.push( last=b[bi-1] ); 
+            return union;
+        }],
+
+        // Array DIFFERENCE of 2 arrays
+        // returns difference array
+        // https://github.com/foo123/sinful.js
+        [Array, 'difference', function (a, b) {
+            
+            var ai = 0, bi = 0, diff = [ ],
+                al = a.length, bl = b.length;
+            // assume a, b lists are sorted ascending
+            while( ai < al && bi < bl )
+            {
+                if      ( a[ai] < b[bi] )
+                { 
+                    diff.push( a[ ai ] );
+                    ai++; 
+                }
+                else if ( a[ai] > b[bi] )
+                { 
+                    diff.push( b[ bi ] );
+                    bi++; 
+                }
+                else // they're equal
+                {
+                    ai++; bi++;
+                }
+            }
+            return diff;
+        }],
+
+        // Array INTERSECTION of 2 arrays
+        // returns common unique values of both arrays
+        // https://github.com/foo123/sinful.js
+        [Array, 'intersection', function (a, b) {
+            
+            var ai = 0, bi = 0, intersection = [ ],
+                al = a.length, bl = b.length;
+            // assume a, b lists are sorted ascending
+            while( ai < al && bi < bl )
+            {
+                if      ( a[ai] < b[bi] )
+                { 
+                    ai++; 
+                }
+                else if ( a[ai] > b[bi] )
+                { 
+                    bi++; 
+                }
+                else // they're equal
+                {
+                    intersection.push( a[ ai ] );
+                    ai++; bi++;
+                }
+            }
+            return intersection;
+        }],
+
         [Array, 'shortest', function () {
 
             return slice(arguments).reduce(function (p, c) {
@@ -516,40 +653,129 @@ void function (bless) {
 
         }],
 
-        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
         // Array unbiased shuffling
         // using Fisher-Yates-Knuth shuffle algorithm
+        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
         // https://github.com/foo123/sinful.js
-        [Array.prototype, 'shuffle', function () {
-            var N, perm, swap, arr = this;
-            N = arr.length;
-            while ( N-- )
+        [Array.prototype, 'shuffle', function (cyclic, copied) {
+            
+            var N, perm, swap, 
+                offset = true === cyclic ? 1 : 0,
+                a = true === copied ? this.slice() : this;
+            N = a.length;
+            while ( offset < N-- )
             { 
-                perm = Math.round(N*Math.random()); 
-                swap = arr[ N ]; 
-                arr[ N ] = arr[ perm ]; 
-                arr[ perm ] = swap; 
+                perm = Math.round((N-offset)*Math.random()); 
+                swap = a[ N ]; 
+                a[ N ] = a[ perm ]; 
+                a[ perm ] = swap; 
             }
             // in-place
             return arr;
         }],
         
-        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
         // Array unbiased partial shuffling, indicated by included indices
         // using variation of Fisher-Yates-Knuth shuffle algorithm
+        // http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
         // https://github.com/foo123/sinful.js
-        [Array.prototype, 'shuffle_only', function (included_indices) {
-            var N, perm, swap, arr = this;
-            N = included_indices.length;
-            while ( N-- )
+        [Array.prototype, 'shuffle_only', function (included, cyclic, copied) {
+            
+            var N, perm, swap, 
+                offset = true === cyclic ? 1 : 0,
+                a = true === copied ? this.slice() : this;
+            N = included.length;
+            while ( offset < N-- )
             { 
-                perm = Math.round(N*Math.random()); 
-                swap = arr[ included_indices[N] ]; 
-                arr[ included_indices[N] ] = arr[ included_indices[perm] ]; 
-                arr[ included_indices[perm] ] = swap; 
+                perm = Math.round((N-offset)*Math.random()); 
+                swap = a[ included[N] ]; 
+                a[ included[N] ] = a[ included[perm] ]; 
+                a[ included[perm] ] = swap; 
             }
             // in-place
             return arr;
+        }],
+        
+        // Array unbiased random selection of k elements
+        // using variation of Fisher-Yates-Knuth shuffle algorithm
+        // http://stackoverflow.com/a/32035986/3591273
+        // https://github.com/foo123/sinful.js
+        [Array.prototype, 'pick', function (k, non_destructive) {
+            
+            var a = this, n = a.length,
+                picked, backup, i, selected, value;
+                k = Math.min( k, n );
+                picked = new Array( k ); 
+                backup = new Array( k );
+            
+            non_destructive = false !== non_destructive;
+            // partially shuffle the array, and generate unbiased selection simultaneously
+            // this is a variation on fisher-yates-knuth shuffle
+            for (i=0; i<k; i++) // O(k) times
+            { 
+                --n;
+                selected = Math.round(n*Math.random()); // unbiased sampling n * n-1 * n-2 * .. * n-k+1
+                value = a[ selected ];
+                a[ selected ] = a[ n ];
+                a[ n ] = value;
+                backup[ i ] = selected;
+                picked[ i ] = value;
+            }
+            if ( non_destructive )
+            {
+                // restore partially shuffled input array from backup
+                for (i=k-1; i>=0; i--) // O(k) times
+                { 
+                    selected = backup[ i ];
+                    value = a[ n ];
+                    a[ n ] = a[ selected ];
+                    a[ selected ] = value;
+                    n++;
+                }
+            }
+            return picked;
+        }],
+        
+        // Array unbiased random selection of k elements, 
+        // from part of Array indiocated in included indices
+        // using variation of Fisher-Yates-Knuth shuffle algorithm
+        // http://stackoverflow.com/a/32035986/3591273
+        // https://github.com/foo123/sinful.js
+        [Array.prototype, 'pick_only', function (k, included, non_destructive) {
+            
+            var a = this, n = a.length,
+                picked, backup, i, selected, value, 
+                index, ni = included.length;
+                k = Math.min( k, n );
+                picked = new Array( k );
+                backup = new Array( k );
+            
+            non_destructive = false !== non_destructive;
+            // partially shuffle the array, and generate unbiased selection simultaneously
+            // this is a variation on fisher-yates-knuth shuffle
+            for (i=0; i<k; i++) // O(k) times
+            { 
+                --ni;
+                index = Math.round(ni*Math.random()); // unbiased sampling n * n-1 * n-2 * .. * n-k+1
+                selected = included[ index ];
+                value = a[ selected ];
+                included[ index ] = included[ ni ];
+                included[ ni ] = selected;
+                backup[ i ] = index;
+                picked[ i ] = value;
+            }
+            if ( non_destructive )
+            {
+                // restore partially shuffled input array from backup
+                for (i=k-1; i>=0; i--) // O(k) times
+                { 
+                    index = backup[ i ];
+                    selected = included[ ni ];
+                    included[ ni ] = included[ index ];
+                    included[ index ] = selected;
+                    ni++;
+                }
+            }
+            return picked;
         }],
         
         [Array.prototype, 'unique', function (search) {
@@ -593,6 +819,15 @@ void function (bless) {
 
         [Array.prototype, 'last', function () {
             return this[ this.length - 1 ];
+        }],
+
+        // https://github.com/foo123/sinful.js
+        [Array.prototype, 'get', function (index) {
+            // use negative indices to count from end of array
+            // eg. array.get(-1), gets last element, if exists
+            if ( index < 0 ) index += this.length;
+            if ( index >=0 && index < this.length ) return this[ index ];
+            // undefined
         }],
 
 
