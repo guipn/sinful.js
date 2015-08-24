@@ -409,7 +409,7 @@ void function (bless) {
         [Array, 'sorter', function () {
 
             var arr = this, i, args = arguments, l = args.length,
-                a, b, step, lt, gt,
+                a, b, avar, bvar, variables, step, lt, gt,
                 field, filter_args, sorter_args, desc, dir, sorter,
                 ASC = '|^', DESC = '|v';
             // |^ after a (nested) field indicates ascending sorting (default), 
@@ -420,6 +420,7 @@ void function (bless) {
             {
                 step = 1;
                 sorter = [];
+                variables = [];
                 sorter_args = [];
                 filter_args = []; 
                 for (i=l-1; i>=0; i--)
@@ -459,14 +460,19 @@ void function (bless) {
                         a = filter_args[0] + '(' + a + ')';
                         b = filter_args[0] + '(' + b + ')';
                     }
+                    avar = 'a_'+i; bvar = 'b_'+i;
+                    variables.unshift(''+avar+'='+a+','+bvar+'='+b+'');
                     lt = desc ?(''+step):('-'+step); gt = desc ?('-'+step):(''+step);
-                    sorter.unshift("("+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0))");
+                    sorter.unshift("("+avar+" < "+bvar+" ? "+lt+" : ("+avar+" > "+bvar+" ? "+gt+" : 0))");
                     step <<= 1;
                 }
                 // use optional custom filters as well
                 return (new Function(
                         filter_args.join(','), 
-                        'return function(a,b) { return ('+sorter.join(' + ')+'); };'
+                        ['return function(a,b) {',
+                         '  var '+variables.join(',')+';',
+                         '  return '+sorter.join('+')+';',
+                         '};'].join("\n")
                         ))
                         .apply(null, sorter_args);
             }
@@ -474,7 +480,7 @@ void function (bless) {
             {
                 a = "a"; b = "b"; lt = '-1'; gt = '1';
                 sorter = ""+a+" < "+b+" ? "+lt+" : ("+a+" > "+b+" ? "+gt+" : 0)";
-                return new Function("a,b", 'return ('+sorter+');');
+                return new Function("a,b", 'return '+sorter+';');
             }
         }],
 
@@ -671,7 +677,7 @@ void function (bless) {
                 a[ perm ] = swap; 
             }
             // in-place
-            return arr;
+            return a;
         }],
         
         // Array unbiased partial shuffling, indicated by included indices
@@ -692,7 +698,7 @@ void function (bless) {
                 a[ included[perm] ] = swap; 
             }
             // in-place
-            return arr;
+            return a;
         }],
         
         // Array unbiased random selection of k elements
